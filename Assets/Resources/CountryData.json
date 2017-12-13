@@ -1,0 +1,368 @@
+{
+  "Countries": [
+    {
+      "Name": "Canada",
+      "Points": []
+    },
+    {
+      "Name": "United States",
+      "Points": []
+    },
+    {
+      "Name": "Mexico",
+      "Points": []
+    },
+    {
+      "Name": "Guatemala",
+      "Points": []
+    },
+    {
+      "Name": "Nicaragua",
+      "Points": []
+    },
+    {
+      "Name": "Panama",
+      "Points": []
+    },
+    {
+      "Name": "Cuba",
+      "Points": []
+    },
+    {
+      "Name": "Puerto Rico",
+      "Points": []
+    },
+    {
+      "Name": "Venezuela",
+      "Points": []
+    },
+    {
+      "Name": "Colombia",
+      "Points": []
+    },
+    {
+      "Name": "Ecuador",
+      "Points": []
+    },
+    {
+      "Name": "Peru",
+      "Points": []
+    },
+    {
+      "Name": "Bolivia",
+      "Points": []
+    },
+    {
+      "Name": "Brazil",
+      "Points": []
+    },
+    {
+      "Name": "Paraguay",
+      "Points": []
+    },
+    {
+      "Name": "Chile",
+      "Points": []
+    },
+    {
+      "Name": "Argentina",
+      "Points": []
+    },
+    {
+      "Name": "Greenland",
+      "Points": []
+    },
+    {
+      "Name": "Iceland",
+      "Points": []
+    },
+    {
+      "Name": "United Kingdom",
+      "Points": []
+    },
+    {
+      "Name": "Ireland",
+      "Points": []
+    },
+    {
+      "Name": "Norway",
+      "Points": []
+    },
+    {
+      "Name": "Sweden",
+      "Points": []
+    },
+    {
+      "Name": "Finland",
+      "Points": []
+    },
+    {
+      "Name": "Denmark",
+      "Points": []
+    },
+    {
+      "Name": "Germany",
+      "Points": []
+    },
+    {
+      "Name": "Poland",
+      "Points": []
+    },
+    {
+      "Name": "Belarus",
+      "Points": []
+    },
+    {
+      "Name": "France",
+      "Points": []
+    },
+    {
+      "Name": "Austria",
+      "Points": []
+    },
+    {
+      "Name": "Ukraine",
+      "Points": []
+    },
+    {
+      "Name": "Portugal",
+      "Points": []
+    },
+    {
+      "Name": "Spain",
+      "Points": []
+    },
+    {
+      "Name": "Italy",
+      "Points": []
+    },
+    {
+      "Name": "Romaina",
+      "Points": []
+    },
+    {
+      "Name": "Greece",
+      "Points": []
+    },
+    {
+      "Name": "Turkey",
+      "Points": []
+    },
+    {
+      "Name": "Morocco",
+      "Points": []
+    },
+    {
+      "Name": "Algeria",
+      "Points": []
+    },
+    {
+      "Name": "Tunisia",
+      "Points": []
+    },
+    {
+      "Name": "Libya",
+      "Points": []
+    },
+    {
+      "Name": "Egypt",
+      "Points": []
+    },
+    {
+      "Name": "Mauritania",
+      "Points": []
+    },
+    {
+      "Name": "Mali",
+      "Points": []
+    },
+    {
+      "Name": "Niger",
+      "Points": []
+    },
+    {
+      "Name": "Chad",
+      "Points": []
+    },
+    {
+      "Name": "Sudan",
+      "Points": []
+    },
+    {
+      "Name": "Guinea",
+      "Points": []
+    },
+    {
+      "Name": "Ghana",
+      "Points": []
+    },
+    {
+      "Name": "Nigeria",
+      "Points": []
+    },
+    {
+      "Name": "South Sudan",
+      "Points": []
+    },
+    {
+      "Name": "Ethiopia",
+      "Points": []
+    },
+    {
+      "Name": "Congo",
+      "Points": []
+    },
+    {
+      "Name": "Kenya",
+      "Points": []
+    },
+    {
+      "Name": "Somalia",
+      "Points": []
+    },
+    {
+      "Name": "Tanzania",
+      "Points": []
+    },
+    {
+      "Name": "Angola",
+      "Points": []
+    },
+    {
+      "Name": "Zambia",
+      "Points": []
+    },
+    {
+      "Name": "Mozambique",
+      "Points": []
+    },
+    {
+      "Name": "Namibia",
+      "Points": []
+    },
+    {
+      "Name": "Botswana",
+      "Points": []
+    },
+    {
+      "Name": "Zimbabwe",
+      "Points": []
+    },
+    {
+      "Name": "Madagascar",
+      "Points": []
+    },
+    {
+      "Name": "South Africa",
+      "Points": []
+    },
+    {
+      "Name": "Yemen",
+      "Points": []
+    },
+    {
+      "Name": "Oman",
+      "Points": []
+    },
+    {
+      "Name": "Saudi Arabia",
+      "Points": []
+    },
+    {
+      "Name": "Iraq",
+      "Points": []
+    },
+    {
+      "Name": "Syria",
+      "Points": []
+    },
+    {
+      "Name": "Iran",
+      "Points": []
+    },
+    {
+      "Name": "Russia",
+      "Points": []
+    },
+    {
+      "Name": "Kazakstan",
+      "Points": []
+    },
+    {
+      "Name": "Uzbekistan",
+      "Points": []
+    },
+    {
+      "Name": "Turkmenistan",
+      "Points": []
+    },
+    {
+      "Name": "Afghanistan",
+      "Points": []
+    },
+    {
+      "Name": "Pakistan",
+      "Points": []
+    },
+    {
+      "Name": "India",
+      "Points": []
+    },
+    {
+      "Name": "China",
+      "Points": []
+    },
+    {
+      "Name": "Mongolia",
+      "Points": []
+    },
+    {
+      "Name": "Myranmar",
+      "Points": []
+    },
+    {
+      "Name": "Thailand",
+      "Points": []
+    },
+    {
+      "Name": "Vietnam",
+      "Points": []
+    },
+    {
+      "Name": "Maysia",
+      "Points": []
+    },
+    {
+      "Name": "Philippines",
+      "Points": []
+    },
+    {
+      "Name": "North Korea",
+      "Points": []
+    },
+    {
+      "Name": "South Korea",
+      "Points": []
+    },
+    {
+      "Name": "Japan",
+      "Points": []
+    },
+    {
+      "Name": "Indonesia",
+      "Points": []
+    },
+    {
+      "Name": "Papua New Guinea",
+      "Points": []
+    },
+    {
+      "Name": "Australia",
+      "Points": []
+    },
+    {
+      "Name": "New Zealand",
+      "Points": []
+    }
+  ]
+}
