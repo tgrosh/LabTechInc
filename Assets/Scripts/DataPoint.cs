@@ -6,34 +6,68 @@ public class DataPoint : MonoBehaviour {
     public int x;
     public int y;
     public float population;
-    public float infection;
-    public bool selected;
-    public string countryName;
+    public float infection; 
+    private bool selected;
+    private string countryName;
     public Color color;
-
-    private int nameValue;
-    private Color originalColor = Color.clear;
+    private Color originalColor = Color.white;
     private Color currentColor = Color.clear;
-    
+    private bool populated;
+
     // Use this for initialization
     void Start () {        
         
     }
-	
-	// Update is called once per frame
-	void Update () {
-		if (selected && currentColor != Color.cyan)
-        {
-            originalColor = gameObject.GetComponent<Renderer>().material.color;
-            currentColor = gameObject.GetComponent<Renderer>().material.color = Color.cyan;
-        } else if (!selected && countryName != "" && countryName != "UNKNOWN" && currentColor != color)
-        {
-            currentColor = gameObject.GetComponent<Renderer>().material.color = color;
-        }
-        else if (!selected && originalColor != Color.clear)
-        {
-            gameObject.GetComponent<Renderer>().material.color = originalColor;
-            originalColor = currentColor = Color.clear;
+
+    public bool Selected {
+        get { return selected; }
+        set {
+            selected = value;
+            setColor();
         }
     }
+
+    public bool Populated {
+        get
+        {
+            return populated;
+        }
+        set
+        {
+            populated = value;
+            GetComponent<MeshRenderer>().enabled = value;
+            setColor();
+        }
+    }
+
+    public string CountryName {
+        get { return countryName; }
+        set
+        {
+            countryName = value;
+            setColor();
+        }
+    }
+
+    private void setColor()
+    {
+        if (populated && selected && currentColor != Color.cyan)
+        {
+            //originalColor = gameObject.GetComponent<Renderer>().material.color;
+            //Debug.Log("Setting originalColor to " + originalColor);
+            currentColor = gameObject.GetComponent<Renderer>().material.color = Color.cyan;
+            //Debug.Log("Setting color to cyan");
+        }
+        else if (populated && !selected && countryName != "" && countryName != "UNKNOWN" && currentColor != color)
+        {
+            currentColor = gameObject.GetComponent<Renderer>().material.color = color;
+            //Debug.Log("Setting color to country color " + color);
+        }
+        else if (populated && !selected && string.IsNullOrEmpty(countryName) && currentColor != originalColor)
+        {
+            //Debug.Log("Setting color to original color " + originalColor);
+            currentColor = gameObject.GetComponent<Renderer>().material.color = Color.white;
+        }
+    }
+    
 }

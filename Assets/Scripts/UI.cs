@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour {
     public GameObject uiPanel;
     public DataLoader loader;
+    public DataEditor editor;
     public Dropdown countryList;
     public GameObject dataPlane;
     
-    private Dictionary<string, Color> countryColors = new Dictionary<string, Color>();
 
     // Use this for initialization
     void Start () {
@@ -36,41 +36,26 @@ public class UI : MonoBehaviour {
         Cursor.visible = false;
     }
 
+    public void SaveWorldData()
+    {
+        editor.SaveWorldData();
+    }
+
     public void SetCountry()
     {
-        Color newColor = Random.ColorHSV(0, 1, 0, 1, 0, 1, 1, 1);
-        DataPoint[] points = dataPlane.GetComponentsInChildren<DataPoint>();
-        foreach (DataPoint point in points)
-        {
-            if (point.selected)
-            {
-                point.countryName = countryList.captionText.text;
-                point.color = getCountryColor(point.countryName);
-                point.selected = false;
-            }
-        }
+        editor.SetCountryText(countryList.captionText.text);
     }
 
-    public Color getCountryColor(string countryName)
+    public void ClearCountry()
     {
-        Color color = Color.clear;
-
-        if (countryColors.ContainsKey(countryName))
-        {
-            color = countryColors[countryName];
-        } else
-        {
-            color = Random.ColorHSV(.05f, .95f, .05f, .95f, .05f, .95f, 1, 1);
-            countryColors.Add(countryName, color);
-        }
-
-        return color;
+        editor.SetCountryText("");
     }
-
+        
     private void FillCountries()
     {
-        string[] countries = loader.GetAllCountries();
+        List<string> countries = new List<string>(loader.GetAllCountries());
         countryList.ClearOptions();
+        countries.Sort();
 
         foreach (string countryName in countries)
         {

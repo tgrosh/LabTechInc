@@ -15,7 +15,7 @@ public class PointSeeker : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        RaycastHit hit;
+        DataPoint point;
 
         if (Input.GetKeyUp(KeyCode.F1))
         {
@@ -42,27 +42,44 @@ public class PointSeeker : MonoBehaviour {
             radius *= .5f;
         }
 
-        if (Input.GetMouseButton(0))
+        if (!uiMode && Input.GetMouseButton(0))
         {
             RaycastHit[] hits = Physics.SphereCastAll(Camera.main.ScreenPointToRay(Input.mousePosition), radius);
             foreach (RaycastHit sphereHit in hits)
             {
-                hit = sphereHit;
-                if (hit.transform.GetComponent<DataPoint>() != null)
+                point = sphereHit.transform.GetComponent<DataPoint>();
+                if (point != null)
                 {
-                    hit.transform.GetComponent<DataPoint>().selected = true;
+                    if (Input.GetKey(KeyCode.LeftAlt) && !string.IsNullOrEmpty(point.CountryName))
+                    {
+                        //do nothing
+                    } else if (!Input.GetKey(KeyCode.LeftControl) && point.Populated)
+                    {
+                        point.Selected = true;
+                    }
+                    else if (Input.GetKey(KeyCode.LeftControl))
+                    {
+                        point.Populated = true;
+                    }
                 }
             }
         }
-        else if (Input.GetMouseButton(1))
+        else if (!uiMode && Input.GetMouseButton(1))
         {
             RaycastHit[] hits = Physics.SphereCastAll(Camera.main.ScreenPointToRay(Input.mousePosition), radius);
             foreach (RaycastHit sphereHit in hits)
             {
-                hit = sphereHit;
-                if (hit.transform.GetComponent<DataPoint>() != null)
+                point = sphereHit.transform.GetComponent<DataPoint>();
+                if (point != null)
                 {
-                    hit.transform.GetComponent<DataPoint>().selected = false;
+                    if (!Input.GetKey(KeyCode.LeftControl) && point.Populated)
+                    {
+                        point.Selected = false;
+                    }
+                    else if (Input.GetKey(KeyCode.LeftControl))
+                    {
+                        point.Populated = false;
+                    }
                 }
             }
         }
