@@ -14,7 +14,7 @@ public class DataEditor : MonoBehaviour {
     // Use this for initialization
     void Start () {
         bounds = GetComponent<MeshFilter>().mesh.bounds;
-        Load("dataPoints", "worldData");
+        //Load("dataPoints", "worldData");
 	}
 	
 	// Update is called once per frame
