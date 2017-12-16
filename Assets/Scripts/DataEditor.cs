@@ -14,18 +14,21 @@ public class DataEditor : MonoBehaviour {
     // Use this for initialization
     void Start () {
         bounds = GetComponent<MeshFilter>().mesh.bounds;
-        //Load("dataPoints", "worldData");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public void LoadWorld()
+    {
+        Load("dataPoints", "worldData");
+    }
     
     private void Load(string populationResourceName, string worldDataResourceName)
     {
         CreateEmptyGrid();
-        //OverlayPopulationData(populationResourceName);
         OverlayWorldData(worldDataResourceName);
     }
 
@@ -51,7 +54,7 @@ public class DataEditor : MonoBehaviour {
                 GameObject p = Instantiate<GameObject>(DataPointPrefab);
                 p.transform.parent = transform;
                 p.transform.localPosition = new Vector3(-1 * (bounds.size.x / 360 * x), 0, -1 * (bounds.size.z / 180 * y));
-
+                
                 DataPoint pdata = p.GetComponent<DataPoint>();
                 pdata.x = x;
                 pdata.y = y;
