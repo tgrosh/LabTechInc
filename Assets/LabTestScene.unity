@@ -1199,7 +1199,7 @@ MonoBehaviour:
   loader: {fileID: 908625588}
   globe: {fileID: 2032969234}
   drawInterval: 1
-  virusPrefab: {fileID: 114668792272596462, guid: d959c860abc1c3a49af22281a68324bb,
+  infectionPointPrefab: {fileID: 114768958507004494, guid: 7d003ee4abbd26c4f8345bd94467006e,
     type: 2}
 --- !u!4 &401232597
 Transform:
