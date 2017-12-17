@@ -48,7 +48,7 @@ public class DataGlobe : MonoBehaviour
         }
 
         CreateObject();
-        //Destroy(pointObject);
+        Destroy(pointObject);
         isReady = true;
     }
         
