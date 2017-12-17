@@ -1199,6 +1199,8 @@ MonoBehaviour:
   loader: {fileID: 908625588}
   globe: {fileID: 2032969234}
   drawInterval: 1
+  virusPrefab: {fileID: 114668792272596462, guid: d959c860abc1c3a49af22281a68324bb,
+    type: 2}
 --- !u!4 &401232597
 Transform:
   m_ObjectHideFlags: 0

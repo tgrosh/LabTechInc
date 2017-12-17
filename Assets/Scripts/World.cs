@@ -8,6 +8,7 @@ public class World : MonoBehaviour {
     public DataGlobe globe;
     public InfectionPoint[][] infectionPoints = new InfectionPoint[180][];
     public float drawInterval = 1.0f;
+    public Virus virusPrefab;
 
     private float currentDrawTime = 1.0f;
 
@@ -21,6 +22,7 @@ public class World : MonoBehaviour {
 
         InfectionPoint.OnInfectionPointUpdated += InfectionPoint_OnInfectionPointUpdated;
         LoadInfectionPoints();
+        //TestUpdateInfectionPoints();
     }
 	
 	// Update is called once per frame
@@ -35,16 +37,17 @@ public class World : MonoBehaviour {
 
     void TestUpdateInfectionPoints()
     {
-        int numPointsToTest = 1000;
-
+        int numPointsToTest = 10;
+        
         for (int p=0; p<numPointsToTest; p++)
         {
+            Virus virus = Instantiate(virusPrefab);
             int randomX = Random.Range(0, 360);
             int randomY = Random.Range(0, 180);
             InfectionPoint point = infectionPoints[randomY][randomX];
             if (point != null)
-            {                
-                point.Infection = Random.Range(0.5f, 1f);
+            {
+                point.Infect(virus);
             }
         }        
     }
