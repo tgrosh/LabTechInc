@@ -1,20 +1,28 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
-public class InfectionPoint: CountryPoint
+public class InfectionPoint: MonoBehaviour
 {
+    public int x;
+    public int y;
+    public float population;
+    public float infection;
     public string countryName;
     public int vertIndex;
     public Virus virus;
+    public float updateInterval = 1.0f;
+
+    float currentTime = 0f;
+    float prevInfection = 0f;
 
     public static event InfectionUpdatedEventHandler OnInfectionPointUpdated;
     public delegate void InfectionUpdatedEventHandler(InfectionPoint point);
 
     public void Infect(Virus virus)
     {
-        Debug.Log(countryName + " is now infected");
+        //Debug.Log(countryName + " is now infected");
         this.virus = virus;
         this.virus.hostPoint = this;
-        this.virus.active = true;
         Infection = .01f;
     }
 
@@ -25,13 +33,26 @@ public class InfectionPoint: CountryPoint
         }
         set
         {
-            infection = value;
+            prevInfection = infection;
+            infection = value > 1 ? 1 : value;
 
-            if (OnInfectionPointUpdated != null)
+            if (prevInfection != infection && OnInfectionPointUpdated != null)
             {
                 //Debug.Log("Infection Points updating for " + countryName);
                 OnInfectionPointUpdated(this);
             }
         }
+    }
+    
+    // Update is called once per frame
+    void Update()
+    {
+        if (virus != null && currentTime >= updateInterval)
+        {
+            //Debug.Log("Virus is updating infection levels in " + hostPoint.countryName);
+            Infection *= 2f;
+            currentTime = 0;
+        }
+        currentTime += Time.deltaTime;
     }
 }
