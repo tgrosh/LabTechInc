@@ -23,7 +23,6 @@ public class World : MonoBehaviour {
 
         InfectionPoint.OnInfectionPointUpdated += InfectionPoint_OnInfectionPointUpdated;
         LoadInfectionPoints();
-        //TestUpdateInfectionPoints();
     }
 	
 	// Update is called once per frame
@@ -38,7 +37,7 @@ public class World : MonoBehaviour {
 
     void TestUpdateInfectionPoints()
     {
-        int numPointsToTest = 1000;
+        int numPointsToTest = 10;
         
         for (int p=0; p<numPointsToTest; p++)
         {
