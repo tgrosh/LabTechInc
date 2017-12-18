@@ -57,3 +57,6 @@ MonoBehaviour:
   infection: 0
   countryName: 
   vertIndex: 0
+  updateInterval: 1
+  adjacentTravelChance: 0.1
+  world: {fileID: 0}

@@ -12,9 +12,7 @@ public class World : MonoBehaviour {
     public float drawInterval = 1.0f;
     public InfectionPoint infectionPointPrefab;
     Virus virus = new Virus(1.5f);
-
-    private float currentDrawTime = 1.0f;
-
+    
     void Awake()
     {
         instance = this;
@@ -75,7 +73,7 @@ public class World : MonoBehaviour {
             }
         }
 
-        return result;
+        return result.Count > 0 ? result : null;
     }
 
     private void LoadInfectionPoints()

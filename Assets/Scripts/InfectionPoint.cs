@@ -16,7 +16,6 @@ public class InfectionPoint: MonoBehaviour
     public World world;
 
     List<InfectionPoint> adjacents;
-    float currentTime = 0f;
     float prevInfection = 0f;
 
     public static event InfectionUpdatedEventHandler OnInfectionPointUpdated;
@@ -25,8 +24,7 @@ public class InfectionPoint: MonoBehaviour
     public void Infect(Virus virus)
     {
         if (this.virus != null) return;
-
-        Debug.Log(countryName + " is now infected");
+        
         this.virus = virus;
         Infection = .001f;
     }
@@ -59,10 +57,9 @@ public class InfectionPoint: MonoBehaviour
 
     void InfectAdjacent()
     {
-        float travel = Random.value;
-        if (travel > adjacentTravelChance) return;
+        if (Random.value > adjacentTravelChance) return;
         
-        if (adjacents == null || adjacents.Count == 0)
+        if (adjacents == null)
         {
             adjacents = world.GetAdjacentInfectionPoints(this);
         }
