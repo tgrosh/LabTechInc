@@ -8,11 +8,14 @@ public class DataGlobe : MonoBehaviour
     public Gradient Colors;
     public GameObject Earth;
     public GameObject PointPrefab;
+    public VertGroup vertGroupPrefab;
     public DataLoader loader;
     public float ValueScaleMultiplier = 1;
     public bool isReady = false;
     public GameObject EarthVertGroupParent;
+    public float updateInterval = 1.0f;
 
+    float currentTime = 0f;
     List<Vector3> meshVertices = new List<Vector3>(65000);
     List<int> meshIndices = new List<int>(117000);
     List<Color> meshColors = new List<Color>(65000);
@@ -21,6 +24,16 @@ public class DataGlobe : MonoBehaviour
     public void Start()
     {
         
+    }
+
+    public void Update()
+    {
+        if (currentTime >= updateInterval)
+        {
+            UpdateMeshColors();
+            currentTime = 0;
+        }
+        currentTime += Time.deltaTime;        
     }
 
     public void CreateWorldMeshes(World world)
@@ -105,6 +118,15 @@ public class DataGlobe : MonoBehaviour
     //        }
     //    }
     //}
+
+    public void UpdateMeshColors()
+    {
+        foreach (Transform t in EarthVertGroupParent.transform)
+        {
+            Mesh mesh = t.gameObject.GetComponent<MeshFilter>().mesh;
+            mesh.colors = t.gameObject.GetComponent<VertGroup>().colors;
+        }        
+    }
     
     public void UpdateInfectionPointColor(InfectionPoint point)
     {
@@ -112,16 +134,16 @@ public class DataGlobe : MonoBehaviour
 
         Color newColor = Colors.Evaluate(point.Infection);
         int objectIndex = (point.vertIndex / 65000); //which object is it in
-        GameObject vertGroup = EarthVertGroupParent.transform.GetChild(objectIndex).gameObject; //get the object it is in
-        Mesh mesh = vertGroup.GetComponent<MeshFilter>().mesh;
+        VertGroup vertGroup = EarthVertGroupParent.transform.GetChild(objectIndex).GetComponent<VertGroup>();
+        GameObject obj = EarthVertGroupParent.transform.GetChild(objectIndex).gameObject; //get the object it is in
         int indexStart = point.vertIndex % 65000;
 
-        Color[] colors = mesh.colors;
+        Color[] colors = vertGroup.colors;
         for (int i=indexStart; i<indexStart + 20; i++)
         {
             colors[i] = newColor;
         }
-        mesh.colors = colors;
+        vertGroup.colors = colors;
     }
         
     private void CreateObject()
@@ -131,8 +153,11 @@ public class DataGlobe : MonoBehaviour
         mesh.triangles = meshIndices.ToArray();
         mesh.colors = meshColors.ToArray();
 
-        GameObject obj = new GameObject("VertGroup_" + vertIndex);
-        obj.tag = "EarthVertGroup";
+        VertGroup vertGroup = Instantiate(vertGroupPrefab);
+        vertGroup.colors = meshColors.ToArray();
+
+        GameObject obj = vertGroup.gameObject;
+        obj.name = "VertGroup_" + vertIndex;
         obj.transform.parent = EarthVertGroupParent.transform;
         obj.transform.localPosition = Vector3.zero;
         obj.transform.localRotation = Quaternion.identity;

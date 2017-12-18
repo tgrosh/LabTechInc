@@ -345,10 +345,13 @@ MonoBehaviour:
   Earth: {fileID: 1623389206434998}
   PointPrefab: {fileID: 1000012603317774, guid: 00fd232efcaa11040ad4450d5e011e9a,
     type: 2}
+  vertGroupPrefab: {fileID: 114913236657119390, guid: 5cbf68429331bcc4196445cd583c158f,
+    type: 2}
   loader: {fileID: 0}
   ValueScaleMultiplier: 0.05
   isReady: 0
   EarthVertGroupParent: {fileID: 1551647780559968}
+  updateInterval: 1
 --- !u!114 &114456491165587652
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -38,7 +38,7 @@ public class World : MonoBehaviour {
 
     void TestUpdateInfectionPoints()
     {
-        int numPointsToTest = 100;
+        int numPointsToTest = 1000;
         
         for (int p=0; p<numPointsToTest; p++)
         {
