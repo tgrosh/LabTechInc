@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
 public class World : MonoBehaviour {
+    public static World instance;
     public DataLoader loader;
     public DataGlobe globe;
     public InfectionPoint[][] infectionPoints = new InfectionPoint[180][];
@@ -12,6 +14,11 @@ public class World : MonoBehaviour {
     Virus virus = new Virus(1.5f);
 
     private float currentDrawTime = 1.0f;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
 	// Use this for initialization
 	void Start ()
@@ -23,16 +30,12 @@ public class World : MonoBehaviour {
 
         InfectionPoint.OnInfectionPointUpdated += InfectionPoint_OnInfectionPointUpdated;
         LoadInfectionPoints();
+
+        TestUpdateInfectionPoints();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (currentDrawTime >= drawInterval)
-        {
-            TestUpdateInfectionPoints();
-            currentDrawTime = 0;
-        }
-        currentDrawTime += Time.deltaTime;
     }
 
     void TestUpdateInfectionPoints()
@@ -41,14 +44,38 @@ public class World : MonoBehaviour {
         
         for (int p=0; p<numPointsToTest; p++)
         {
-            int randomX = Random.Range(0, 360);
-            int randomY = Random.Range(0, 180);
+            int randomX = UnityEngine.Random.Range(0, 360);
+            int randomY = UnityEngine.Random.Range(0, 180);
             InfectionPoint point = infectionPoints[randomY][randomX];
             if (point != null)
             {
                 point.Infect(virus);
             }
         }        
+    }
+
+    public List<InfectionPoint> GetAdjacentInfectionPoints(InfectionPoint infectionPoint)
+    {
+        int x = infectionPoint.x + 180;
+        int y = infectionPoint.y + 90;
+        List<InfectionPoint> result = new List<InfectionPoint>();
+
+        for (int ix=x-1; ix<=x+1; ix++)
+        {
+            for (int iy=y-1; iy<=y+1; iy++)
+            {
+                if (ix>=0 && iy>=0 && ix<360 && iy<180 && !(x==ix && y==iy))
+                {
+                    InfectionPoint point = infectionPoints[iy][ix];
+                    if (point != null)
+                    {
+                        result.Add(point);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     private void LoadInfectionPoints()
@@ -67,6 +94,7 @@ public class World : MonoBehaviour {
                 pt.infection = countryPoint.infection;
                 pt.population = countryPoint.population;
                 pt.countryName = countryData.Name;
+                pt.world = this;
             }
         }
         globe.CreateWorldMeshes(this);

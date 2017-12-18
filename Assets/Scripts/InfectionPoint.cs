@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InfectionPoint: MonoBehaviour
@@ -11,7 +12,10 @@ public class InfectionPoint: MonoBehaviour
     public int vertIndex;
     public Virus virus;
     public float updateInterval = 1.0f;
+    public float adjacentTravelChance = .1f; //.001
+    public World world;
 
+    List<InfectionPoint> adjacents;
     float currentTime = 0f;
     float prevInfection = 0f;
 
@@ -20,7 +24,9 @@ public class InfectionPoint: MonoBehaviour
 
     public void Infect(Virus virus)
     {
-        //Debug.Log(countryName + " is now infected");
+        if (this.virus != null) return;
+
+        Debug.Log(countryName + " is now infected");
         this.virus = virus;
         Infection = .001f;
     }
@@ -41,15 +47,32 @@ public class InfectionPoint: MonoBehaviour
             }
         }
     }
-    
-    // Update is called once per frame
-    void Update()
+
+    void UpdateInfectionPoint()
     {
-        if (virus != null && currentTime >= updateInterval)
+        if (virus != null)
         {
             Infection *= virus.infectionRate;
-            currentTime = 0;
+            InfectAdjacent();
         }
-        currentTime += Time.deltaTime;
     }
+
+    void InfectAdjacent()
+    {
+        float travel = Random.value;
+        if (travel > adjacentTravelChance) return;
+        
+        if (adjacents == null || adjacents.Count == 0)
+        {
+            adjacents = world.GetAdjacentInfectionPoints(this);
+        }
+        int travelPoint = Random.Range(0, adjacents.Count - 1);
+        adjacents[travelPoint].Infect(virus);
+    }
+
+    public void Start()
+    {
+        InvokeRepeating("UpdateInfectionPoint", 0f, updateInterval);
+    }
+    
 }
