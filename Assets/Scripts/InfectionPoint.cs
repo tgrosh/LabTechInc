@@ -22,8 +22,7 @@ public class InfectionPoint: MonoBehaviour
     {
         //Debug.Log(countryName + " is now infected");
         this.virus = virus;
-        this.virus.hostPoint = this;
-        Infection = .01f;
+        Infection = .001f;
     }
 
     public float Infection {
@@ -38,7 +37,6 @@ public class InfectionPoint: MonoBehaviour
 
             if (prevInfection != infection && OnInfectionPointUpdated != null)
             {
-                //Debug.Log("Infection Points updating for " + countryName);
                 OnInfectionPointUpdated(this);
             }
         }
@@ -49,8 +47,7 @@ public class InfectionPoint: MonoBehaviour
     {
         if (virus != null && currentTime >= updateInterval)
         {
-            //Debug.Log("Virus is updating infection levels in " + hostPoint.countryName);
-            Infection *= 2f;
+            Infection *= virus.infectionRate;
             currentTime = 0;
         }
         currentTime += Time.deltaTime;

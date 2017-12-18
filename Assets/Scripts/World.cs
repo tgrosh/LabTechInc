@@ -9,7 +9,7 @@ public class World : MonoBehaviour {
     public InfectionPoint[][] infectionPoints = new InfectionPoint[180][];
     public float drawInterval = 1.0f;
     public InfectionPoint infectionPointPrefab;
-    Virus virus = new Virus();
+    Virus virus = new Virus(1.5f);
 
     private float currentDrawTime = 1.0f;
 
