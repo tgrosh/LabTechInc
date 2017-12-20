@@ -76,6 +76,24 @@ public class World : MonoBehaviour {
         return result.Count > 0 ? result : null;
     }
 
+    public List<int> GetAdjacentInfectionPointIndexes(int x, int y)
+    {
+        List<int> result = new List<int>();
+
+        for (int ix = x - 1; ix <= x + 1; ix++)
+        {
+            for (int iy = y - 1; iy <= y + 1; iy++)
+            {
+                if (ix >= 0 && iy >= 0 && ix < 360 && iy < 180 && !(x == ix && y == iy))
+                {
+                    result.Add(iy*360 + ix);
+                }
+            }
+        }
+
+        return result;
+    }
+
     private void LoadInfectionPoints()
     {
         CountryData[] countries = loader.LoadJSON("WorldData").Countries;
@@ -93,6 +111,7 @@ public class World : MonoBehaviour {
                 pt.population = countryPoint.population;
                 pt.countryName = countryData.Name;
                 pt.world = this;
+                pt.adjacentInfectionPointIndexes = GetAdjacentInfectionPointIndexes(countryPoint.x + 180, countryPoint.y + 90);
             }
         }
         globe.CreateWorldMeshes(this);

@@ -11,11 +11,11 @@ public class InfectionPoint: MonoBehaviour
     public string countryName;
     public int vertIndex;
     public Virus virus;
+    public World world;
     public float updateInterval = 1.0f;
     public float adjacentTravelChance = .1f; //.001
-    public World world;
-
-    List<InfectionPoint> adjacents;
+    public List<int> adjacentInfectionPointIndexes = new List<int>();
+    
     float prevInfection = 0f;
 
     public static event InfectionUpdatedEventHandler OnInfectionPointUpdated;
@@ -59,12 +59,14 @@ public class InfectionPoint: MonoBehaviour
     {
         if (Random.value > adjacentTravelChance) return;
         
-        if (adjacents == null)
+        int travelPoint = Random.Range(0, adjacentInfectionPointIndexes.Count - 1);
+        int y = adjacentInfectionPointIndexes[travelPoint] / 360;
+        int x = adjacentInfectionPointIndexes[travelPoint] % 360;
+        InfectionPoint adjacentPoint = world.infectionPoints[y][x];
+        if (adjacentPoint != null)
         {
-            adjacents = world.GetAdjacentInfectionPoints(this);
+            adjacentPoint.Infect(virus);
         }
-        int travelPoint = Random.Range(0, adjacents.Count - 1);
-        adjacents[travelPoint].Infect(virus);
     }
 
     public void Start()
