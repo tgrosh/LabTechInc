@@ -51,31 +51,7 @@ public class World : MonoBehaviour {
             }
         }        
     }
-
-    public List<InfectionPoint> GetAdjacentInfectionPoints(InfectionPoint infectionPoint)
-    {
-        int x = infectionPoint.x + 180;
-        int y = infectionPoint.y + 90;
-        List<InfectionPoint> result = new List<InfectionPoint>();
-
-        for (int ix=x-1; ix<=x+1; ix++)
-        {
-            for (int iy=y-1; iy<=y+1; iy++)
-            {
-                if (ix>=0 && iy>=0 && ix<360 && iy<180 && !(x==ix && y==iy))
-                {
-                    InfectionPoint point = infectionPoints[iy][ix];
-                    if (point != null)
-                    {
-                        result.Add(point);
-                    }
-                }
-            }
-        }
-
-        return result.Count > 0 ? result : null;
-    }
-
+    
     public List<int> GetAdjacentInfectionPointIndexes(int x, int y)
     {
         List<int> result = new List<int>();

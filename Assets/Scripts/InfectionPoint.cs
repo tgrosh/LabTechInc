@@ -71,7 +71,7 @@ public class InfectionPoint: MonoBehaviour
 
     public void Start()
     {
-        InvokeRepeating("UpdateInfectionPoint", 0f, updateInterval);
+        InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
     }
     
 }
