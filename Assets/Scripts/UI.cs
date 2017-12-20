@@ -38,7 +38,13 @@ public class UI : MonoBehaviour {
 
     public void SaveWorldData()
     {
-        editor.SaveWorldData();
+        editor.SaveWorldData("Assets/Resources/WorldData.json");
+    }
+
+    public void LoadWorldData()
+    {
+        editor.LoadWorld();
+        editor.SaveWorldData("Assets/Resources/WorldDataBackup.json");
     }
 
     public void SetCountry()

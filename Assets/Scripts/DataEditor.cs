@@ -138,7 +138,7 @@ public class DataEditor : MonoBehaviour {
         return color;
     }
 
-    public void SaveWorldData()
+    public void SaveWorldData(string resourceName)
     {
         WorldData world = new WorldData();
         List<CountryData> countries = new List<CountryData>();
@@ -169,6 +169,6 @@ public class DataEditor : MonoBehaviour {
 
         world.Countries = countries.ToArray();
 
-        File.WriteAllText("Assets/Resources/WorldData.json", JsonUtility.ToJson(world));
+        File.WriteAllText(resourceName, JsonUtility.ToJson(world));
     }
 }

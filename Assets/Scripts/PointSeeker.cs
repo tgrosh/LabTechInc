@@ -10,7 +10,7 @@ public class PointSeeker : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        ui = GameObject.Find("Canvas").GetComponent<UI>();
+        ui = GameObject.Find("UICanvas").GetComponent<UI>();
     }
 	
 	// Update is called once per frame
