@@ -7,6 +7,7 @@ using UnityEngine;
 public class DataEditor : MonoBehaviour {
     public DataLoader loader;
     public GameObject DataPointPrefab;
+    public Gradient healthCareGradient;
     Bounds bounds;
     DataPoint[] allPoints;
     private Dictionary<string, Color> countryColors = new Dictionary<string, Color>();
@@ -26,7 +27,12 @@ public class DataEditor : MonoBehaviour {
     {
         Load("worldData", EditMode.COUNTRIES);
     }
-    
+
+    public void LoadHealthcare()
+    {
+        Load("worldData", EditMode.HEALTHCARE);
+    }
+
     private void Load(string worldDataResourceName, EditMode editMode)
     {
         CreateEmptyGrid();
@@ -86,6 +92,7 @@ public class DataEditor : MonoBehaviour {
                             pdata.color = getCountryColor(countryData.Name);
                             break;
                         case EditMode.HEALTHCARE:
+                            pdata.color = getHealthCareColor(pdata.healthCare);
                             break;
                         default:
                             break;
@@ -135,6 +142,11 @@ public class DataEditor : MonoBehaviour {
         }
 
         return color;
+    }
+
+    public Color getHealthCareColor(float healthCare)
+    {
+        return healthCareGradient.Evaluate(healthCare);
     }
 
     public void SaveWorldData(string resourceName)
