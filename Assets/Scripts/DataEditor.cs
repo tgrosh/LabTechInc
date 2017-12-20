@@ -10,6 +10,7 @@ public class DataEditor : MonoBehaviour {
     Bounds bounds;
     DataPoint[] allPoints;
     private Dictionary<string, Color> countryColors = new Dictionary<string, Color>();
+    CountryData[] countries;
 
     // Use this for initialization
     void Start () {
@@ -21,15 +22,16 @@ public class DataEditor : MonoBehaviour {
 		
 	}
 
-    public void LoadWorld()
+    public void LoadCountries()
     {
-        Load("dataPoints", "worldData");
+        Load("worldData", EditMode.COUNTRIES);
     }
     
-    private void Load(string populationResourceName, string worldDataResourceName)
+    private void Load(string worldDataResourceName, EditMode editMode)
     {
         CreateEmptyGrid();
-        OverlayWorldData(worldDataResourceName);
+        LoadCountries(worldDataResourceName);
+        OverlayWorldData(worldDataResourceName, editMode);
     }
 
     private DataPoint FindDataPoint(int x, int y)
@@ -65,10 +67,9 @@ public class DataEditor : MonoBehaviour {
 
         allPoints = GetComponentsInChildren<DataPoint>();
     }
-
-    private void OverlayPopulationData(string resourceName)
-    {
-        CountryData[] countries = loader.LoadJSON(resourceName).Countries;
+    
+    private void OverlayWorldData(string resourceName, EditMode editMode)
+    {        
         foreach (CountryData countryData in countries)
         {
             foreach (CountryPoint countryPoint in countryData.Points)
@@ -78,28 +79,26 @@ public class DataEditor : MonoBehaviour {
                 {
                     pdata.population = countryPoint.population;
                     pdata.Populated = true;
+                    pdata.healthCare = countryPoint.healthCare;
+                    switch (editMode)
+                    {
+                        case EditMode.COUNTRIES:
+                            pdata.color = getCountryColor(countryData.Name);
+                            break;
+                        case EditMode.HEALTHCARE:
+                            break;
+                        default:
+                            break;
+                    }
+                    pdata.CountryName = countryData.Name;
                 }
             }
         }
     }
 
-    private void OverlayWorldData(string resourceName)
+    private void LoadCountries(string resourceName)
     {
-        CountryData[] countries = loader.LoadJSON(resourceName).Countries;
-        foreach (CountryData countryData in countries)
-        {
-            foreach (CountryPoint countryPoint in countryData.Points)
-            {
-                DataPoint pdata = FindDataPoint(countryPoint.x, countryPoint.y);
-                if (pdata != null)
-                {
-                    pdata.population = countryPoint.population;
-                    pdata.Populated = true;
-                    pdata.color = getCountryColor(countryData.Name);
-                    pdata.CountryName = countryData.Name;
-                }
-            }
-        }
+        countries = loader.LoadJSON(resourceName).Countries;
     }
 
     public void SetCountryText(string countryText)
@@ -156,6 +155,7 @@ public class DataEditor : MonoBehaviour {
                     cp.y = point.y;
                     cp.population = point.population;
                     cp.infection = point.infection;
+                    cp.healthCare = point.healthCare;
                     countryPoints.Add(cp);
                 }
             }
@@ -171,4 +171,10 @@ public class DataEditor : MonoBehaviour {
 
         File.WriteAllText(resourceName, JsonUtility.ToJson(world));
     }
+}
+
+public enum EditMode
+{
+    COUNTRIES,
+    HEALTHCARE
 }
