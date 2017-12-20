@@ -8,6 +8,7 @@ public class InfectionPoint: MonoBehaviour
     public int y;
     public float population;
     public float infection;
+    public float healthCare;
     public string countryName;
     public int vertIndex;
     public Virus virus;

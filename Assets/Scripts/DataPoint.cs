@@ -6,7 +6,8 @@ public class DataPoint : MonoBehaviour {
     public int x;
     public int y;
     public float population;
-    public float infection; 
+    public float infection;
+    public float healthCare;
     private bool selected;
     private string countryName;
     public Color color;

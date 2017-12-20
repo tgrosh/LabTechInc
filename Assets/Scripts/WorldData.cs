@@ -17,4 +17,5 @@ public class CountryPoint
     public int y;
     public float population;
     public float infection;
+    public float healthCare;
 }
