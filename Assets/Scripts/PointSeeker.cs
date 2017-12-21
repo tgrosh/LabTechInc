@@ -5,33 +5,17 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PointSeeker : MonoBehaviour {
     public float radius = .01f;
-    private bool uiMode = false;
     private UI ui;
 
 	// Use this for initialization
 	void Start () {
         ui = GameObject.Find("UICanvas").GetComponent<UI>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+        
+    // Update is called once per frame
+    void Update () {
         DataPoint point;
-
-        if (Input.GetKeyUp(KeyCode.F1))
-        {
-            if (uiMode)
-            {
-                uiMode = false;
-                ui.HideUI();
-            } else
-            {
-                uiMode = true;
-                ui.ShowUI();
-            }
-            
-            transform.parent.GetComponentInChildren<FirstPersonController>().enabled = !uiMode;
-        }
-
+        
         if (Input.GetKeyUp(KeyCode.PageUp))
         {
             radius *= 2f;
@@ -42,7 +26,7 @@ public class PointSeeker : MonoBehaviour {
             radius *= .5f;
         }
 
-        if (!uiMode && Input.GetMouseButton(0))
+        if (!ui.uiPanel.activeInHierarchy && Input.GetMouseButton(0))
         {
             RaycastHit[] hits = Physics.SphereCastAll(Camera.main.ScreenPointToRay(Input.mousePosition), radius);
             foreach (RaycastHit sphereHit in hits)
@@ -50,10 +34,13 @@ public class PointSeeker : MonoBehaviour {
                 point = sphereHit.transform.GetComponent<DataPoint>();
                 if (point != null)
                 {
-                    if (Input.GetKey(KeyCode.LeftAlt) && !string.IsNullOrEmpty(point.CountryName))
+                    if (Input.GetKey(KeyCode.LeftAlt) && 
+                        ((ui.editMode == EditMode.COUNTRIES && !string.IsNullOrEmpty(point.CountryName)) || 
+                        (ui.editMode == EditMode.HEALTHCARE && point.HealthCare != 0)))
                     {
                         //do nothing
-                    } else if (!Input.GetKey(KeyCode.LeftControl) && point.Populated)
+                    }
+                    else if (!Input.GetKey(KeyCode.LeftControl) && point.Populated)
                     {
                         point.Selected = true;
                     }
@@ -64,7 +51,7 @@ public class PointSeeker : MonoBehaviour {
                 }
             }
         }
-        else if (!uiMode && Input.GetMouseButton(1))
+        else if (!ui.uiPanel.activeInHierarchy && Input.GetMouseButton(1))
         {
             RaycastHit[] hits = Physics.SphereCastAll(Camera.main.ScreenPointToRay(Input.mousePosition), radius);
             foreach (RaycastHit sphereHit in hits)

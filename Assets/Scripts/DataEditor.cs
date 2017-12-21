@@ -85,14 +85,14 @@ public class DataEditor : MonoBehaviour {
                 {
                     pdata.population = countryPoint.population;
                     pdata.Populated = true;
-                    pdata.healthCare = countryPoint.healthCare;
+                    pdata.HealthCare = countryPoint.healthCare;
                     switch (editMode)
                     {
                         case EditMode.COUNTRIES:
                             pdata.color = getCountryColor(countryData.Name);
                             break;
                         case EditMode.HEALTHCARE:
-                            pdata.color = getHealthCareColor(pdata.healthCare);
+                            pdata.color = getHealthCareColor(pdata.HealthCare);
                             break;
                         default:
                             break;
@@ -120,6 +120,20 @@ public class DataEditor : MonoBehaviour {
                 point.Selected = false;
             }
         }
+    }
+
+    public void SetHealthCare(float healthCare)
+    {
+        DataPoint[] points = GetComponentsInChildren<DataPoint>();
+        foreach (DataPoint point in points)
+        {
+            if (point.Selected)
+            {
+                point.color = getHealthCareColor(healthCare/10f);
+                point.HealthCare = healthCare/10f;
+                point.Selected = false;
+            }
+        }        
     }
 
     public Color getCountryColor(string countryName)
@@ -167,7 +181,7 @@ public class DataEditor : MonoBehaviour {
                     cp.y = point.y;
                     cp.population = point.population;
                     cp.infection = point.infection;
-                    cp.healthCare = point.healthCare;
+                    cp.healthCare = point.HealthCare;
                     countryPoints.Add(cp);
                 }
             }

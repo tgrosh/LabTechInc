@@ -7,13 +7,16 @@ public class DataPoint : MonoBehaviour {
     public int y;
     public float population;
     public float infection;
-    public float healthCare;
-    private bool selected;
-    private string countryName;
     public Color color;
+
     private Color originalColor = Color.white;
     private Color currentColor = Color.clear;
     private bool populated;
+    [SerializeField]
+    private string countryName;
+    private bool selected;
+    [SerializeField]
+    private float healthCare;
 
     // Use this for initialization
     void Start () {        
@@ -50,23 +53,30 @@ public class DataPoint : MonoBehaviour {
         }
     }
 
+    public float HealthCare {
+        get
+        {
+            return healthCare;
+        }
+        set
+        {
+            healthCare = value > 1 ? 1 : value;
+            setColor();
+        }
+    }
+
     private void setColor()
     {
         if (populated && selected && currentColor != Color.cyan)
         {
-            //originalColor = gameObject.GetComponent<Renderer>().material.color;
-            //Debug.Log("Setting originalColor to " + originalColor);
             currentColor = gameObject.GetComponent<Renderer>().material.color = Color.cyan;
-            //Debug.Log("Setting color to cyan");
         }
-        else if (populated && !selected && countryName != "" && countryName != "UNKNOWN" && currentColor != color)
+        else if (populated && !selected && currentColor != color)
         {
             currentColor = gameObject.GetComponent<Renderer>().material.color = color;
-            //Debug.Log("Setting color to country color " + color);
         }
         else if (populated && !selected && string.IsNullOrEmpty(countryName) && currentColor != originalColor)
         {
-            //Debug.Log("Setting color to original color " + originalColor);
             currentColor = gameObject.GetComponent<Renderer>().material.color = Color.white;
         }
     }
