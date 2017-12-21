@@ -87,6 +87,7 @@ public class World : MonoBehaviour {
                 pt.population = countryPoint.population;
                 pt.countryName = countryData.Name;
                 pt.world = this;
+                pt.healthCare = countryPoint.healthCare - 0.1f;
                 pt.adjacentInfectionPointIndexes = GetAdjacentInfectionPointIndexes(countryPoint.x + 180, countryPoint.y + 90);
             }
         }

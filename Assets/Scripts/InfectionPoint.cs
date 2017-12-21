@@ -51,7 +51,8 @@ public class InfectionPoint: MonoBehaviour
     {
         if (virus != null)
         {
-            Infection *= virus.infectionRate;
+            float infectionIncrease = virus.infectionRate - ((virus.infectionRate - 1f) * healthCare);
+            Infection *= infectionIncrease;
             InfectAdjacent();
         }
     }
@@ -73,6 +74,7 @@ public class InfectionPoint: MonoBehaviour
     public void Start()
     {
         InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
+        adjacentTravelChance = adjacentTravelChance - (adjacentTravelChance * healthCare);
     }
     
 }
