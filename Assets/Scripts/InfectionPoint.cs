@@ -16,7 +16,8 @@ public class InfectionPoint: MonoBehaviour
     public float updateInterval = 1.0f;
     public float adjacentTravelChance = .1f; //.001
     public List<int> adjacentInfectionPointIndexes = new List<int>();
-    
+    public float temperatureFactor;
+
     float prevInfection = 0f;
 
     public static event InfectionUpdatedEventHandler OnInfectionPointUpdated;
@@ -51,7 +52,9 @@ public class InfectionPoint: MonoBehaviour
     {
         if (virus != null)
         {
-            float infectionIncrease = virus.infectionRate - ((virus.infectionRate - 1f) * healthCare);
+            float healthCareReduction = ((virus.infectionRate - 1f) * healthCare);
+            float infectionIncrease = virus.infectionRate - healthCareReduction;
+            infectionIncrease -= ((infectionIncrease - 1f) * temperatureFactor);
             Infection *= infectionIncrease;
             InfectAdjacent();
         }
@@ -59,7 +62,8 @@ public class InfectionPoint: MonoBehaviour
 
     void InfectAdjacent()
     {
-        if (Random.value > adjacentTravelChance) return;
+        float adjacentRoll = Random.value;
+        if (adjacentRoll > adjacentTravelChance) return;
         
         int travelPoint = Random.Range(0, adjacentInfectionPointIndexes.Count - 1);
         int y = adjacentInfectionPointIndexes[travelPoint] / 360;
@@ -67,7 +71,10 @@ public class InfectionPoint: MonoBehaviour
         InfectionPoint adjacentPoint = world.infectionPoints[y][x];
         if (adjacentPoint != null)
         {
-            adjacentPoint.Infect(virus);
+            if (adjacentRoll < adjacentTravelChance * adjacentPoint.temperatureFactor)
+            {
+                adjacentPoint.Infect(virus);
+            }
         }
     }
 
