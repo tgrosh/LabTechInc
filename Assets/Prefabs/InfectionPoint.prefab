@@ -55,8 +55,12 @@ MonoBehaviour:
   y: 0
   population: 0
   infection: 0
+  healthCare: 0
   countryName: 
   vertIndex: 0
-  updateInterval: 1
-  adjacentTravelChance: 0.1
   world: {fileID: 0}
+  updateInterval: 1
+  adjacentTravelChance: 1
+  adjacentInfectionPointIndexes: 
+  temperatureFactor: 0
+  isAirport: 0

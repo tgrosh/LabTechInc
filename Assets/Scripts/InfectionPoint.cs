@@ -17,6 +17,7 @@ public class InfectionPoint: MonoBehaviour
     public float adjacentTravelChance = .1f; //.001
     public List<int> adjacentInfectionPointIndexes = new List<int>();
     public float temperatureFactor;
+    public bool isAirport;
 
     float prevInfection = 0f;
 

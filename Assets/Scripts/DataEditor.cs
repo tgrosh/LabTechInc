@@ -33,10 +33,15 @@ public class DataEditor : MonoBehaviour {
         Load("worldData", EditMode.HEALTHCARE);
     }
 
+    public void LoadAirports()
+    {
+        Load("worldData", EditMode.AIRPORTS);
+    }
+
     private void Load(string worldDataResourceName, EditMode editMode)
     {
         CreateEmptyGrid();
-        LoadCountries(worldDataResourceName);
+        LoadWorld(worldDataResourceName);
         OverlayWorldData(worldDataResourceName, editMode);
     }
 
@@ -83,27 +88,31 @@ public class DataEditor : MonoBehaviour {
                 DataPoint pdata = FindDataPoint(countryPoint.x, countryPoint.y);
                 if (pdata != null)
                 {
-                    pdata.population = countryPoint.population;
-                    pdata.Populated = true;
-                    pdata.HealthCare = countryPoint.healthCare;
                     switch (editMode)
                     {
                         case EditMode.COUNTRIES:
                             pdata.color = getCountryColor(countryData.Name);
                             break;
                         case EditMode.HEALTHCARE:
-                            pdata.color = getHealthCareColor(pdata.HealthCare);
+                            pdata.color = getHealthCareColor(countryPoint.healthCare);
+                            break;
+                        case EditMode.AIRPORTS:
+                            pdata.color = getAirportColor(countryPoint.isAirport);
                             break;
                         default:
                             break;
                     }
+                    pdata.population = countryPoint.population;
+                    pdata.Populated = true;
                     pdata.CountryName = countryData.Name;
+                    pdata.HealthCare = countryPoint.healthCare;
+                    pdata.IsAirport = countryPoint.isAirport;
                 }
             }
         }
     }
 
-    private void LoadCountries(string resourceName)
+    private void LoadWorld(string resourceName)
     {
         countries = loader.LoadJSON(resourceName).Countries;
     }
@@ -136,6 +145,20 @@ public class DataEditor : MonoBehaviour {
         }        
     }
 
+    public void SetAirport(bool isAirport)
+    {
+        DataPoint[] points = GetComponentsInChildren<DataPoint>();
+        foreach (DataPoint point in points)
+        {
+            if (point.Selected)
+            {
+                point.color = getAirportColor(isAirport);
+                point.IsAirport = isAirport;
+                point.Selected = false;
+            }
+        }
+    }
+
     public Color getCountryColor(string countryName)
     {
         Color color = Color.clear;
@@ -163,6 +186,11 @@ public class DataEditor : MonoBehaviour {
         return healthCareGradient.Evaluate(healthCare);
     }
 
+    public Color getAirportColor(bool isAirport)
+    {
+        return isAirport ? Color.red : Color.white;
+    }
+
     public void SaveWorldData(string resourceName)
     {
         WorldData world = new WorldData();
@@ -182,6 +210,7 @@ public class DataEditor : MonoBehaviour {
                     cp.population = point.population;
                     cp.infection = point.infection;
                     cp.healthCare = point.HealthCare;
+                    cp.isAirport = point.IsAirport;
                     countryPoints.Add(cp);
                 }
             }
@@ -202,5 +231,6 @@ public class DataEditor : MonoBehaviour {
 public enum EditMode
 {
     COUNTRIES,
-    HEALTHCARE
+    HEALTHCARE,
+    AIRPORTS
 }

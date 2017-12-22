@@ -12,11 +12,10 @@ public class DataPoint : MonoBehaviour {
     private Color originalColor = Color.white;
     private Color currentColor = Color.clear;
     private bool populated;
-    [SerializeField]
     private string countryName;
     private bool selected;
-    [SerializeField]
     private float healthCare;
+    private bool isAirport;
 
     // Use this for initialization
     void Start () {        
@@ -61,6 +60,15 @@ public class DataPoint : MonoBehaviour {
         set
         {
             healthCare = value > 1 ? 1 : value;
+            setColor();
+        }
+    }
+
+    public bool IsAirport {
+        get { return isAirport; }
+        set
+        {
+            isAirport = value;
             setColor();
         }
     }

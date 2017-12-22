@@ -90,6 +90,7 @@ public class World : MonoBehaviour {
                 pt.healthCare = countryPoint.healthCare - 0.1f;
                 pt.adjacentInfectionPointIndexes = GetAdjacentInfectionPointIndexes(countryPoint.x + 180, countryPoint.y + 90);
                 pt.temperatureFactor = (Mathf.Abs(Mathf.Abs(pt.y) - 45f) / 45f) * .25f; //should be range from 0 to .25
+                pt.isAirport = countryPoint.isAirport;
             }
         }
         globe.CreateWorldMeshes(this);

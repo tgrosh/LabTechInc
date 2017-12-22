@@ -18,4 +18,5 @@ public class CountryPoint
     public float population;
     public float infection;
     public float healthCare;
+    public bool isAirport;
 }

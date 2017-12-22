@@ -54,20 +54,28 @@ public class UI : MonoBehaviour {
 
     public void SetCountryMode()
     {
-        editMode = EditMode.COUNTRIES;
-        GameObject.Find("CountryControls").GetComponent<CanvasGroup>().alpha = 1f;
-        GameObject.Find("HealthcareControls").GetComponent<CanvasGroup>().alpha = 0f;
-        GameObject.Find("EditModeCountry").GetComponent<Image>().color = Color.cyan;
-        GameObject.Find("EditModeHealthcare").GetComponent<Image>().color = Color.white;
+        SetToolbarMode(EditMode.COUNTRIES);
     }
 
     public void SetHealthcareMode()
     {
-        editMode = EditMode.HEALTHCARE;
-        GameObject.Find("CountryControls").GetComponent<CanvasGroup>().alpha = 0f;
-        GameObject.Find("HealthcareControls").GetComponent<CanvasGroup>().alpha = 1f;
-        GameObject.Find("EditModeCountry").GetComponent<Image>().color = Color.white;
-        GameObject.Find("EditModeHealthcare").GetComponent<Image>().color = Color.cyan;
+        SetToolbarMode(EditMode.HEALTHCARE);
+    }
+
+    public void SetAirportMode()
+    {
+        SetToolbarMode(EditMode.AIRPORTS);
+    }
+
+    public void SetToolbarMode(EditMode editMode)
+    {
+        this.editMode = editMode;
+        GameObject.Find("CountryControls").GetComponent<CanvasGroup>().alpha = editMode == EditMode.COUNTRIES ? 1f : 0f;
+        GameObject.Find("HealthcareControls").GetComponent<CanvasGroup>().alpha = editMode == EditMode.HEALTHCARE ? 1f : 0f;
+        GameObject.Find("AirportControls").GetComponent<CanvasGroup>().alpha = editMode == EditMode.AIRPORTS ? 1f : 0f;
+        GameObject.Find("EditModeCountry").GetComponent<Image>().color = editMode == EditMode.COUNTRIES ? Color.cyan : Color.white;
+        GameObject.Find("EditModeHealthcare").GetComponent<Image>().color = editMode == EditMode.HEALTHCARE ? Color.cyan : Color.white;
+        GameObject.Find("EditModeAirport").GetComponent<Image>().color = editMode == EditMode.AIRPORTS ? Color.cyan : Color.white;
     }
 
     public void SaveWorldData()
@@ -87,6 +95,12 @@ public class UI : MonoBehaviour {
         editor.SaveWorldData("Assets/Resources/WorldDataBackup.json");
     }
 
+    public void LoadAirportData()
+    {
+        editor.LoadAirports();
+        editor.SaveWorldData("Assets/Resources/WorldDataBackup.json");
+    }
+
     public void SetCountry()
     {
         editor.SetCountryText(countryList.captionText.text);
@@ -95,6 +109,16 @@ public class UI : MonoBehaviour {
     public void ClearCountry()
     {
         editor.SetCountryText("");
+    }
+
+    public void SetAirport()
+    {
+        editor.SetAirport(true);
+    }
+
+    public void ClearAirport()
+    {
+        editor.SetAirport(false);
     }
 
     public void SetHealthcare()
