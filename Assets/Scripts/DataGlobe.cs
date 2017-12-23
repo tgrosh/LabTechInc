@@ -74,7 +74,7 @@ public class DataGlobe : MonoBehaviour
         pointObject.transform.parent = Earth.transform;
         pointObject.transform.position = pos;
         pointObject.transform.localScale = new Vector3(1, 1, Mathf.Max(0.001f, infectionPoint.population * ValueScaleMultiplier));
-        pointObject.transform.LookAt(pos * -2);
+        pointObject.transform.LookAt(pos * 2);
 
         for (int k = 0; k < verts.Length; k++)
         {

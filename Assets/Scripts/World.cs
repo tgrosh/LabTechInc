@@ -8,6 +8,7 @@ public class World : MonoBehaviour {
     public DataLoader loader;
     public DataGlobe globe;
     public InfectionPoint[][] infectionPoints = new InfectionPoint[180][];
+    public List<InfectionPoint> airports = new List<InfectionPoint>();
     public float drawInterval = 1.0f;
     public InfectionPoint infectionPointPrefab;
     Virus virus = new Virus(1.5f);
@@ -89,9 +90,18 @@ public class World : MonoBehaviour {
                 pt.adjacentInfectionPointIndexes = GetAdjacentInfectionPointIndexes(countryPoint.x + 180, countryPoint.y + 90);
                 pt.temperatureFactor = (Mathf.Abs(Mathf.Abs(pt.y) - 45f) / 45f) * .25f; //should be range from 0 to .25
                 pt.isAirport = countryPoint.isAirport;
+                if (pt.isAirport)
+                {
+                    airports.Add(pt);
+                }
             }
         }
         globe.CreateWorldMeshes(this);
+    }
+
+    public InfectionPoint GetRandomAirport()
+    {
+        return airports[UnityEngine.Random.Range(0, airports.Count)];
     }
 
     private void InfectionPoint_OnInfectionPointUpdated(InfectionPoint point)

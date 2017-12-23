@@ -7,6 +7,7 @@ public class Airplane : MonoBehaviour {
     public InfectionPoint destination;
     public DataGlobe globe;
     public Animator planeAnimator;
+    public Virus virus;
 
     // Use this for initialization
     void Start () {
@@ -21,14 +22,15 @@ public class Airplane : MonoBehaviour {
 
     public void TakeoffComplete()
     {
-        Debug.Log("Airplane has taken off");
         SetPosition(destination);
     }
 
     public void LandingComplete()
     {
-        Debug.Log("Airplane has landed and infected " + destination.countryName);
-        destination.Infect(source.virus);
+        if (virus != null)
+        {
+            destination.Infect(virus);
+        }
         Destroy(gameObject);
     }
 

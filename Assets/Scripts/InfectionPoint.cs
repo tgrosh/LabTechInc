@@ -14,7 +14,8 @@ public class InfectionPoint: MonoBehaviour
     public Virus virus;
     public World world;
     public float updateInterval = 1.0f;
-    public float adjacentTravelChance = .1f; //.001
+    public float adjacentTravelChance = .1f;
+    public float airplaneTravelChance = .025f;
     public List<int> adjacentInfectionPointIndexes = new List<int>();
     public float temperatureFactor;
     public bool isAirport;
@@ -52,13 +53,18 @@ public class InfectionPoint: MonoBehaviour
 
     void UpdateInfectionPoint()
     {
+        if (isAirport)
+        {
+            LaunchAirplane();
+        }
+
         if (virus != null)
         {
             float healthCareReduction = ((virus.infectionRate - 1f) * healthCare);
             float infectionIncrease = virus.infectionRate - healthCareReduction;
             infectionIncrease -= ((infectionIncrease - 1f) * temperatureFactor);
             Infection *= infectionIncrease;
-            InfectAdjacent();
+            InfectAdjacent();            
         }
     }
 
@@ -80,18 +86,35 @@ public class InfectionPoint: MonoBehaviour
         }
     }
 
-    public void Start()
+    void LaunchAirplane()
     {
-        InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
-        adjacentTravelChance = adjacentTravelChance - (adjacentTravelChance * healthCare);
+        float airplaneRoll = Random.value;
+        if (airplaneRoll > airplaneTravelChance) return;
 
-        if (isAirport)
+        InfectionPoint destination = world.GetRandomAirport();
+        if (destination != null)
         {
             Airplane airplane = Instantiate(airplanePrefab, world.globe.Earth.transform);
             airplane.globe = world.globe;
             airplane.source = this;
-            airplane.destination = this; //for testing
+            airplane.destination = destination;
+            if (virus != null)
+            {
+                float infectionChance = ((virus.infectionRate - 1f) * healthCare);
+                infectionChance -= ((infectionChance - 1f) * temperatureFactor);
+                if (Random.value < infectionChance)
+                {
+                    airplane.virus = virus;
+                    //Debug.Log("INFECTED! Airplane has taken off from " + countryName + " bound for " + destination.countryName);
+                }
+            }
         }
+    }
+
+    public void Start()
+    {
+        InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
+        adjacentTravelChance = adjacentTravelChance - (adjacentTravelChance * healthCare);        
     }
     
 }

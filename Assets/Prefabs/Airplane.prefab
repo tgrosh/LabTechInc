@@ -171,3 +171,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   source: {fileID: 0}
   destination: {fileID: 0}
+  globe: {fileID: 0}
+  planeAnimator: {fileID: 95539132993124602}
