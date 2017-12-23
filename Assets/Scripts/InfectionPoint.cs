@@ -18,7 +18,7 @@ public class InfectionPoint: MonoBehaviour
     public List<int> adjacentInfectionPointIndexes = new List<int>();
     public float temperatureFactor;
     public bool isAirport;
-    public GameObject airplanePrefab;
+    public Airplane airplanePrefab;
 
     float prevInfection = 0f;
 
@@ -27,7 +27,7 @@ public class InfectionPoint: MonoBehaviour
 
     public void Infect(Virus virus)
     {
-        if (this.virus != null) return;
+        if (virus == null || this.virus != null) return;
         
         this.virus = virus;
         Infection = .001f;
@@ -87,7 +87,10 @@ public class InfectionPoint: MonoBehaviour
 
         if (isAirport)
         {
-            Instantiate(airplanePrefab, world.globe.transform);
+            Airplane airplane = Instantiate(airplanePrefab, world.globe.Earth.transform);
+            airplane.globe = world.globe;
+            airplane.source = this;
+            airplane.destination = this; //for testing
         }
     }
     
