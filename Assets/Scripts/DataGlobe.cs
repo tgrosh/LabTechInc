@@ -68,17 +68,13 @@ public class DataGlobe : MonoBehaviour
     private void AppendPointVertices(GameObject pointObject, Vector3[] verts, int[] indices, InfectionPoint infectionPoint)
     {
         Color valueColor = Colors.Evaluate(infectionPoint.Infection);
-        Vector3 pos;
+        Vector3 pos = GetGlobePosition(infectionPoint.x, infectionPoint.y);
         int prevVertCount = meshVertices.Count;
-
-        pos.x = 0.5f * Mathf.Cos((infectionPoint.x) * Mathf.Deg2Rad) * Mathf.Cos(infectionPoint.y * Mathf.Deg2Rad);
-        pos.y = 0.5f * Mathf.Sin(infectionPoint.y * Mathf.Deg2Rad);
-        pos.z = 0.5f * Mathf.Sin((infectionPoint.x) * Mathf.Deg2Rad) * Mathf.Cos(infectionPoint.y * Mathf.Deg2Rad);
-
+        
         pointObject.transform.parent = Earth.transform;
         pointObject.transform.position = pos;
         pointObject.transform.localScale = new Vector3(1, 1, Mathf.Max(0.001f, infectionPoint.population * ValueScaleMultiplier));
-        pointObject.transform.LookAt(pos * 2);
+        pointObject.transform.LookAt(pos * -2);
 
         for (int k = 0; k < verts.Length; k++)
         {
@@ -91,34 +87,18 @@ public class DataGlobe : MonoBehaviour
             meshIndices.Add(prevVertCount + indices[k]);
         }
     }
+
+    public Vector3 GetGlobePosition(float x, float y)
+    {
+        Vector3 pos;
+
+        pos.x = 0.5f * Mathf.Cos((x) * Mathf.Deg2Rad) * Mathf.Cos(y * Mathf.Deg2Rad);
+        pos.y = 0.5f * Mathf.Sin(y * Mathf.Deg2Rad);
+        pos.z = 0.5f * Mathf.Sin((x) * Mathf.Deg2Rad) * Mathf.Cos(y * Mathf.Deg2Rad);
+
+        return pos;
+    }
     
-    //public void UpdateInfectionPointColors(World world)
-    //{
-    //    int globalIndex = 0;
-    //    int numVerts = 20;
-        
-    //    for (int i=2; i<5; i++)
-    //    {
-    //        GameObject vertGroup = Earth.transform.GetChild(i).gameObject;
-    //        Mesh mesh = vertGroup.GetComponent<MeshFilter>().mesh;
-
-    //        for (int index=0; index<mesh.vertices.Length; index+=numVerts)
-    //        {
-    //            InfectionPoint point = GetInfectionPoint(world, globalIndex); //s world.infectionPoints[globalIndex/numVerts, (globalIndex / 360)/numVerts];
-
-    //            //Color newColor = Colors.Evaluate(point.infection);
-    //            //Color[] colors = mesh.colors;
-    //            //for (int x = index; x < index + numVerts; x++)
-    //            //{
-    //            //    colors[x] = newColor;
-    //            //}
-    //            //mesh.colors = colors;
-
-    //            globalIndex += numVerts;
-    //        }
-    //    }
-    //}
-
     public void UpdateMeshColors()
     {
         foreach (Transform t in EarthVertGroupParent.transform)

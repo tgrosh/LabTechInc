@@ -5,7 +5,6 @@ using System.Diagnostics;
 using UnityEngine;
 
 public class World : MonoBehaviour {
-    public static World instance;
     public DataLoader loader;
     public DataGlobe globe;
     public InfectionPoint[][] infectionPoints = new InfectionPoint[180][];
@@ -15,7 +14,6 @@ public class World : MonoBehaviour {
     
     void Awake()
     {
-        instance = this;
     }
 
 	// Use this for initialization
