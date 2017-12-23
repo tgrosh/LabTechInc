@@ -18,6 +18,7 @@ public class InfectionPoint: MonoBehaviour
     public List<int> adjacentInfectionPointIndexes = new List<int>();
     public float temperatureFactor;
     public bool isAirport;
+    public GameObject airplanePrefab;
 
     float prevInfection = 0f;
 
@@ -83,6 +84,11 @@ public class InfectionPoint: MonoBehaviour
     {
         InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
         adjacentTravelChance = adjacentTravelChance - (adjacentTravelChance * healthCare);
+
+        if (isAirport)
+        {
+            Instantiate(airplanePrefab, world.globe.transform);
+        }
     }
     
 }
