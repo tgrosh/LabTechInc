@@ -104,10 +104,11 @@ public class InfectionPoint: MonoBehaviour
                 infectionChance -= ((infectionChance - 1f) * temperatureFactor);
                 if (Random.value < infectionChance)
                 {
-                    airplane.virus = virus;
-                    //Debug.Log("INFECTED! Airplane has taken off from " + countryName + " bound for " + destination.countryName);
+                    airplane.Infect(virus);
+                    Debug.Log("INFECTED! Airplane has taken off from " + countryName + " bound for " + destination.countryName);
                 }
             }
+            airplane.TakeOff();
         }
     }
 

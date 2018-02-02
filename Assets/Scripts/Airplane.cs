@@ -1,24 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Airplane : MonoBehaviour {    
     public InfectionPoint source;
     public InfectionPoint destination;
     public DataGlobe globe;
     public Animator planeAnimator;
-    public Virus virus;
+    private Virus virus;
 
     // Use this for initialization
-    void Start () {
-        SetPosition(source);
-        planeAnimator.SetTrigger("Takeoff");
+    void Start ()
+    {
     }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public void Infect(Virus virus)
+    {
+        this.virus = virus;
+        planeAnimator.SetBool("isInfected", true);
+    }
+
+    public void TakeOff()
+    {
+        SetPosition(source);
+        planeAnimator.SetTrigger("Takeoff");
+    }
 
     public void TakeoffComplete()
     {
