@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Utility;
 
-public class DataGlobe : MonoBehaviour
+public class DataGlobe : OVRGrabbable
 {
     public Material PointMaterial;
     public Gradient Colors;
@@ -14,18 +15,24 @@ public class DataGlobe : MonoBehaviour
     public bool isReady = false;
     public GameObject EarthVertGroupParent;
     public float updateInterval = 1.0f;
-
+    public bool isGrabbing = false;
+    public float resumeDelay = 2f;
+    
+    private AutoMoveAndRotate autoMover;
+    private HingeJoint spinner;
     float currentTime = 0f;
     List<Vector3> meshVertices = new List<Vector3>(65000);
     List<int> meshIndices = new List<int>(117000);
     List<Color> meshColors = new List<Color>(65000);
     int vertIndex = 0;
-    
-    public void Start()
-    {
-        
-    }
+    private float resumeTime;
 
+    new public void Start()
+    {
+        autoMover = GetComponent<AutoMoveAndRotate>();
+        spinner = GetComponent<HingeJoint>();
+    }
+    
     public void Update()
     {
         if (currentTime >= updateInterval)
@@ -33,7 +40,28 @@ public class DataGlobe : MonoBehaviour
             UpdateMeshColors();
             currentTime = 0;
         }
-        currentTime += Time.deltaTime;        
+        currentTime += Time.deltaTime;
+
+        if (m_grabbedBy != null)
+        {
+            resumeTime = 0f;
+            autoMover.enabled = false;
+            spinner.useMotor = false;          
+        }
+        else
+        {
+            if (resumeTime >= resumeDelay)
+            {
+                autoMover.enabled = true;
+                spinner.useMotor = true;
+                resumeTime = 0f;
+            }
+            else
+            {
+                resumeTime += Time.deltaTime;
+            }
+        }
+
     }
 
     public void CreateWorldMeshes(World world)
@@ -150,5 +178,23 @@ public class DataGlobe : MonoBehaviour
         meshVertices.Clear();
         meshIndices.Clear();
         meshColors.Clear();
-    }    
+    }
+
+    /// <summary>
+    /// Notifies the object that it has been grabbed.
+    /// </summary>
+    public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
+    {
+        m_grabbedBy = hand;
+        m_grabbedCollider = grabPoint;
+    }
+
+    /// <summary>
+    /// Notifies the object that it has been released.
+    /// </summary>
+    public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
+    {
+        m_grabbedBy = null;
+        m_grabbedCollider = null;
+    }
 }
