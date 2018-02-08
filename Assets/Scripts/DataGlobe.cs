@@ -19,7 +19,6 @@ public class DataGlobe : OVRGrabbable
     public float resumeDelay = 2f;
     
     private AutoMoveAndRotate autoMover;
-    private HingeJoint spinner;
     float currentTime = 0f;
     List<Vector3> meshVertices = new List<Vector3>(65000);
     List<int> meshIndices = new List<int>(117000);
@@ -30,7 +29,6 @@ public class DataGlobe : OVRGrabbable
     new public void Start()
     {
         autoMover = GetComponent<AutoMoveAndRotate>();
-        spinner = GetComponent<HingeJoint>();
     }
     
     public void Update()
@@ -45,15 +43,13 @@ public class DataGlobe : OVRGrabbable
         if (m_grabbedBy != null)
         {
             resumeTime = 0f;
-            autoMover.enabled = false;
-            spinner.useMotor = false;          
+            autoMover.enabled = false;        
         }
         else
         {
             if (resumeTime >= resumeDelay)
             {
                 autoMover.enabled = true;
-                spinner.useMotor = true;
                 resumeTime = 0f;
             }
             else
