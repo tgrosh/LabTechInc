@@ -142,6 +142,9 @@ public class UI : MonoBehaviour {
             countryList.options.Add(new Dropdown.OptionData(countryName));
         }        
     }
-
-    
+        
+    public void LogMessage(string message)
+    {
+        Debug.Log(message);
+    }
 }

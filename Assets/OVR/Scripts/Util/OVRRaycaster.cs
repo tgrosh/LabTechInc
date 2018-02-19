@@ -38,6 +38,8 @@ public class OVRRaycaster : GraphicRaycaster, IPointerEnterHandler
     [Tooltip("A world space pointer for this canvas")]
     public GameObject pointer;
 
+    public float maxRayDistance = .1f;
+
     public int sortOrder = 0;
 
     protected OVRRaycaster()
@@ -92,7 +94,7 @@ public class OVRRaycaster : GraphicRaycaster, IPointerEnterHandler
 
         if (checkForBlocking && blockingObjects != BlockingObjects.None)
         {
-            float dist = eventCamera.farClipPlane;
+            float dist = maxRayDistance; // eventCamera.farClipPlane;
 
             if (blockingObjects == BlockingObjects.ThreeD || blockingObjects == BlockingObjects.All)
             {
