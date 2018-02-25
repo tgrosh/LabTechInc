@@ -20,7 +20,7 @@ public class UITouchable : MonoBehaviour {
             UIToucher hoverer = objHoverer.AddComponent<UIToucher>();
             hoverer.gameObject.transform.parent = transform;
             hoverer.touchable = GetComponent<RectTransform>();
-            hoverer.triggerHeight = 60;
+            hoverer.triggerHeight = 120;
             hoverer.onEnter = hoverer.onExit = true;
         }
     }

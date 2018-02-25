@@ -12,6 +12,8 @@ public class UI : MonoBehaviour {
     public Dropdown healthCareList;
     public GameObject dataPlane;
     public EditMode editMode = EditMode.COUNTRIES;
+
+    public string SelectedCountry;
     
     // Use this for initialization
     void Start ()
@@ -141,6 +143,11 @@ public class UI : MonoBehaviour {
         {
             countryList.options.Add(new Dropdown.OptionData(countryName));
         }        
+    }
+
+    public void SelectCountryForDeployment(Text CountryText)
+    {
+        SelectedCountry = CountryText.text;
     }
         
     public void LogMessage(string message)
