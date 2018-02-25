@@ -7,6 +7,7 @@ public class WorldData {
 public class CountryData
 {
     public string Name;
+    public string RegionName;
     public CountryPoint[] Points;
 }
 

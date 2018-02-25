@@ -13,6 +13,7 @@ public class DataPoint : MonoBehaviour {
     private Color currentColor = Color.clear;
     private bool populated;
     private string countryName;
+    private string regionName;
     private bool selected;
     private float healthCare;
     private bool isAirport;
@@ -52,6 +53,16 @@ public class DataPoint : MonoBehaviour {
         }
     }
 
+    public string RegionName
+    {
+        get { return regionName; }
+        set
+        {
+            regionName = value;
+            setColor();
+        }
+    }
+
     public float HealthCare {
         get
         {
@@ -83,7 +94,8 @@ public class DataPoint : MonoBehaviour {
         {
             currentColor = gameObject.GetComponent<Renderer>().material.color = color;
         }
-        else if (populated && !selected && string.IsNullOrEmpty(countryName) && currentColor != originalColor)
+        else if (populated && !selected && currentColor != originalColor &&
+            string.IsNullOrEmpty(regionName) && string.IsNullOrEmpty(countryName))
         {
             currentColor = gameObject.GetComponent<Renderer>().material.color = Color.white;
         }

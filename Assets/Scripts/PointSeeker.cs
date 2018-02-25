@@ -6,6 +6,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class PointSeeker : MonoBehaviour {
     public float radius = .01f;
     private UI ui;
+    string prevCountryName = "";
 
 	// Use this for initialization
 	void Start () {
@@ -16,12 +17,12 @@ public class PointSeeker : MonoBehaviour {
     void Update () {
         DataPoint point;
         
-        if (Input.GetKeyUp(KeyCode.PageUp))
+        if (Input.GetKeyUp(KeyCode.PageUp) || Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             radius *= 2f;
         }
 
-        if (Input.GetKeyUp(KeyCode.PageDown))
+        if (Input.GetKeyUp(KeyCode.PageDown) || Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             radius *= .5f;
         }
@@ -35,14 +36,18 @@ public class PointSeeker : MonoBehaviour {
                 if (point != null)
                 {
                     if (Input.GetKey(KeyCode.LeftAlt) && 
-                        ((ui.editMode == EditMode.COUNTRIES && !string.IsNullOrEmpty(point.CountryName)) || 
-                        (ui.editMode == EditMode.HEALTHCARE && point.HealthCare != 0)))
+                        (
+                        (ui.editMode == EditMode.COUNTRIES && !string.IsNullOrEmpty(point.CountryName)) ||
+                        (ui.editMode == EditMode.REGIONS && (prevCountryName != "" && prevCountryName != point.CountryName)) ||
+                        (ui.editMode == EditMode.HEALTHCARE && point.HealthCare != 0))
+                        )
                     {
                         //do nothing
                     }
                     else if (!Input.GetKey(KeyCode.LeftControl) && point.Populated)
                     {
                         point.Selected = true;
+                        prevCountryName = point.CountryName;
                     }
                     else if (Input.GetKey(KeyCode.LeftControl))
                     {

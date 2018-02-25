@@ -11,6 +11,7 @@ public class DataEditor : MonoBehaviour {
     Bounds bounds;
     DataPoint[] allPoints;
     private Dictionary<string, Color> countryColors = new Dictionary<string, Color>();
+    private Dictionary<string, Color> regionColors = new Dictionary<string, Color>();
     CountryData[] countries;
 
     // Use this for initialization
@@ -18,14 +19,14 @@ public class DataEditor : MonoBehaviour {
         bounds = GetComponent<MeshFilter>().mesh.bounds;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     public void LoadCountries()
     {
         Load("worldData", EditMode.COUNTRIES);
+    }
+
+    public void LoadRegions()
+    {
+        Load("worldData", EditMode.REGIONS);
     }
 
     public void LoadHealthcare()
@@ -83,6 +84,12 @@ public class DataEditor : MonoBehaviour {
     {        
         foreach (CountryData countryData in countries)
         {
+            //temporary
+            if (countryData.RegionName == null)
+            {
+                countryData.RegionName = "";
+            }
+
             foreach (CountryPoint countryPoint in countryData.Points)
             {
                 DataPoint pdata = FindDataPoint(countryPoint.x, countryPoint.y);
@@ -99,12 +106,16 @@ public class DataEditor : MonoBehaviour {
                         case EditMode.AIRPORTS:
                             pdata.color = getAirportColor(countryPoint.isAirport);
                             break;
+                        case EditMode.REGIONS:
+                            pdata.color = getRegionColor(countryData.RegionName);
+                            break;
                         default:
                             break;
                     }
                     pdata.population = countryPoint.population;
                     pdata.Populated = true;
                     pdata.CountryName = countryData.Name;
+                    pdata.RegionName = countryData.RegionName;
                     pdata.HealthCare = countryPoint.healthCare;
                     pdata.IsAirport = countryPoint.isAirport;
                 }
@@ -126,6 +137,20 @@ public class DataEditor : MonoBehaviour {
             {
                 point.CountryName = countryText;
                 point.color = getCountryColor(countryText);
+                point.Selected = false;
+            }
+        }
+    }
+
+    public void SetRegionText(string regionText)
+    {
+        DataPoint[] points = GetComponentsInChildren<DataPoint>();
+        foreach (DataPoint point in points)
+        {
+            if (point.Selected)
+            {
+                point.RegionName = regionText;
+                point.color = getRegionColor(regionText);
                 point.Selected = false;
             }
         }
@@ -181,6 +206,28 @@ public class DataEditor : MonoBehaviour {
         return color;
     }
 
+    public Color getRegionColor(string regionName)
+    {
+        Color color = Color.clear;
+
+        if (string.IsNullOrEmpty(regionName))
+        {
+            return Color.white;
+        }
+
+        if (regionColors.ContainsKey(regionName))
+        {
+            color = regionColors[regionName];
+        }
+        else
+        {
+            color = Random.ColorHSV(.05f, .95f, .5f, 1f, .5f, 1f, 1, 1);
+            regionColors.Add(regionName, color);
+        }
+
+        return color;
+    }
+
     public Color getHealthCareColor(float healthCare)
     {
         return healthCareGradient.Evaluate(healthCare);
@@ -199,6 +246,9 @@ public class DataEditor : MonoBehaviour {
         
         foreach (var group in pointGroups)
         {
+            CountryData country = new CountryData();
+            country.Name = group.Key;
+
             List<CountryPoint> countryPoints = new List<CountryPoint>();
             foreach (DataPoint point in group)
             {
@@ -212,11 +262,13 @@ public class DataEditor : MonoBehaviour {
                     cp.healthCare = point.HealthCare;
                     cp.isAirport = point.IsAirport;
                     countryPoints.Add(cp);
+
+                    if (string.IsNullOrEmpty(country.RegionName) && !string.IsNullOrEmpty(point.RegionName))
+                    {
+                        country.RegionName = point.RegionName;
+                    }
                 }
             }
-
-            CountryData country = new CountryData();
-            country.Name = group.Key;
             country.Points = countryPoints.ToArray();
 
             countries.Add(country);
@@ -232,5 +284,6 @@ public enum EditMode
 {
     COUNTRIES,
     HEALTHCARE,
-    AIRPORTS
+    AIRPORTS,
+    REGIONS
 }

@@ -5,14 +5,17 @@ using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class UI : MonoBehaviour {
+    //editor mode members
     public GameObject uiPanel;
     public DataLoader loader;
     public DataEditor editor;
     public Dropdown countryList;
+    public Dropdown regionList;
     public Dropdown healthCareList;
     public GameObject dataPlane;
     public EditMode editMode = EditMode.COUNTRIES;
 
+    //live members
     public string SelectedCountry;
     
     // Use this for initialization
@@ -21,6 +24,7 @@ public class UI : MonoBehaviour {
         SetCountryMode();
         HideUI();
         FillCountries();
+        FillRegions();
     }
 	
 	// Update is called once per frame
@@ -59,6 +63,11 @@ public class UI : MonoBehaviour {
         SetToolbarMode(EditMode.COUNTRIES);
     }
 
+    public void SetRegionMode()
+    {
+        SetToolbarMode(EditMode.REGIONS);
+    }
+
     public void SetHealthcareMode()
     {
         SetToolbarMode(EditMode.HEALTHCARE);
@@ -72,10 +81,14 @@ public class UI : MonoBehaviour {
     public void SetToolbarMode(EditMode editMode)
     {
         this.editMode = editMode;
+
         GameObject.Find("CountryControls").GetComponent<CanvasGroup>().alpha = editMode == EditMode.COUNTRIES ? 1f : 0f;
+        GameObject.Find("RegionControls").GetComponent<CanvasGroup>().alpha = editMode == EditMode.REGIONS ? 1f : 0f;
         GameObject.Find("HealthcareControls").GetComponent<CanvasGroup>().alpha = editMode == EditMode.HEALTHCARE ? 1f : 0f;
         GameObject.Find("AirportControls").GetComponent<CanvasGroup>().alpha = editMode == EditMode.AIRPORTS ? 1f : 0f;
+
         GameObject.Find("EditModeCountry").GetComponent<Image>().color = editMode == EditMode.COUNTRIES ? Color.cyan : Color.white;
+        GameObject.Find("EditModeRegion").GetComponent<Image>().color = editMode == EditMode.REGIONS ? Color.cyan : Color.white;
         GameObject.Find("EditModeHealthcare").GetComponent<Image>().color = editMode == EditMode.HEALTHCARE ? Color.cyan : Color.white;
         GameObject.Find("EditModeAirport").GetComponent<Image>().color = editMode == EditMode.AIRPORTS ? Color.cyan : Color.white;
     }
@@ -88,6 +101,12 @@ public class UI : MonoBehaviour {
     public void LoadCountryData()
     {
         editor.LoadCountries();
+        editor.SaveWorldData("Assets/Resources/WorldDataBackup.json");
+    }
+
+    public void LoadRegionData()
+    {
+        editor.LoadRegions();
         editor.SaveWorldData("Assets/Resources/WorldDataBackup.json");
     }
 
@@ -107,10 +126,20 @@ public class UI : MonoBehaviour {
     {
         editor.SetCountryText(countryList.captionText.text);
     }
-
+    
     public void ClearCountry()
     {
         editor.SetCountryText("");
+    }
+    
+    public void SetRegion()
+    {
+        editor.SetRegionText(regionList.captionText.text);
+    }
+
+    public void ClearRegion()
+    {
+        editor.SetRegionText("");
     }
 
     public void SetAirport()
@@ -143,6 +172,19 @@ public class UI : MonoBehaviour {
         {
             countryList.options.Add(new Dropdown.OptionData(countryName));
         }        
+    }
+
+    private void FillRegions()
+    {
+        regionList.ClearOptions();
+
+        regionList.options.Add(new Dropdown.OptionData("North America"));
+        regionList.options.Add(new Dropdown.OptionData("South America"));
+        regionList.options.Add(new Dropdown.OptionData("Europe"));
+        regionList.options.Add(new Dropdown.OptionData("Africa"));
+        regionList.options.Add(new Dropdown.OptionData("Asia"));
+        regionList.options.Add(new Dropdown.OptionData("Russia"));
+        regionList.options.Add(new Dropdown.OptionData("Oceania"));
     }
 
     public void SelectCountryForDeployment(Text CountryText)
