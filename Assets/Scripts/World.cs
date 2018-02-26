@@ -11,12 +11,7 @@ public class World : MonoBehaviour {
     public List<InfectionPoint> airports = new List<InfectionPoint>();
     public float drawInterval = 1.0f;
     public InfectionPoint infectionPointPrefab;
-    Virus virus = new Virus(1.5f);
     
-    void Awake()
-    {
-    }
-
 	// Use this for initialization
 	void Start ()
     {
@@ -27,28 +22,11 @@ public class World : MonoBehaviour {
 
         InfectionPoint.OnInfectionPointUpdated += InfectionPoint_OnInfectionPointUpdated;
         LoadInfectionPoints();
-
-        TestUpdateInfectionPoints();
     }
 	
-	// Update is called once per frame
-	void Update () {
-    }
-
-    void TestUpdateInfectionPoints()
+    public void DeployVirus(Virus virus, string RegionName)
     {
-        int numPointsToTest = 10;
-        
-        for (int p=0; p<numPointsToTest; p++)
-        {
-            int randomX = UnityEngine.Random.Range(0, 360);
-            int randomY = UnityEngine.Random.Range(0, 180);
-            InfectionPoint point = infectionPoints[randomY][randomX];
-            if (point != null)
-            {
-                point.Infect(virus);
-            }
-        }        
+        GetRandomInfectionPoint(RegionName).Infect(virus);
     }
     
     public List<int> GetAdjacentInfectionPointIndexes(int x, int y)
@@ -68,6 +46,36 @@ public class World : MonoBehaviour {
 
         return result;
     }
+    
+    public InfectionPoint GetRandomAirport()
+    {
+        return airports[UnityEngine.Random.Range(0, airports.Count)];
+    }
+
+    public InfectionPoint GetRandomInfectionPoint(string RegionName)
+    {
+        List<InfectionPoint> countryPoints = new List<InfectionPoint>();
+
+        for (int y = 0; y < 180; y++)
+        {
+            for (int x = 0; x < 360; x++)
+            {
+                InfectionPoint p = infectionPoints[y][x];
+
+                if (p != null && p.regionName == RegionName)
+                {
+                    countryPoints.Add(p);
+                }
+            }
+        }
+
+        if (countryPoints.Count > 0)
+        {
+            return countryPoints[UnityEngine.Random.Range(0, countryPoints.Count)];
+        }
+
+        return null;
+    }
 
     private void LoadInfectionPoints()
     {
@@ -85,6 +93,7 @@ public class World : MonoBehaviour {
                 pt.infection = countryPoint.infection;
                 pt.population = countryPoint.population;
                 pt.countryName = countryData.Name;
+                pt.regionName = countryData.RegionName;
                 pt.world = this;
                 pt.healthCare = countryPoint.healthCare - 0.1f;
                 pt.adjacentInfectionPointIndexes = GetAdjacentInfectionPointIndexes(countryPoint.x + 180, countryPoint.y + 90);
@@ -97,11 +106,6 @@ public class World : MonoBehaviour {
             }
         }
         globe.CreateWorldMeshes(this);
-    }
-
-    public InfectionPoint GetRandomAirport()
-    {
-        return airports[UnityEngine.Random.Range(0, airports.Count)];
     }
 
     private void InfectionPoint_OnInfectionPointUpdated(InfectionPoint point)

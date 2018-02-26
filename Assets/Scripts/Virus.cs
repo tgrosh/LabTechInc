@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Virus {
+public class Virus: MonoBehaviour {
     public float infectionRate;
     
-    public Virus(float infectionRate)
-    {
-        this.infectionRate = infectionRate;
-    }	
 }

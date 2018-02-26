@@ -10,6 +10,7 @@ public class InfectionPoint: MonoBehaviour
     public float infection;
     public float healthCare;
     public string countryName;
+    public string regionName;
     public int vertIndex;
     public Virus virus;
     public World world;
@@ -29,7 +30,7 @@ public class InfectionPoint: MonoBehaviour
     public void Infect(Virus virus)
     {
         if (virus == null || this.virus != null) return;
-        
+
         this.virus = virus;
         Infection = .001f;
     }

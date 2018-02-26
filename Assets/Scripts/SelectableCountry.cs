@@ -17,6 +17,6 @@ public class SelectableCountry : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-        selection.SetActive(ui.SelectedCountry == text.text);
+        selection.SetActive(ui.SelectedRegion == text.text);
 	}
 }
