@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class SelectableCountry : MonoBehaviour
 {
     public GameObject selection;
-    private UI ui;
+    private DistributorUI ui;
     private Text text;
 
     // Use this for initialization
     void Start () {
-        ui = GameObject.Find("UICanvas").GetComponent<UI>();
+        ui = GameObject.Find("DistributorCanvas").GetComponent<DistributorUI>();
         text = transform.GetComponentInChildren<Text>();
     }
 	

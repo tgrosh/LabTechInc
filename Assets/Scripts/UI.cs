@@ -14,12 +14,7 @@ public class UI : MonoBehaviour {
     public Dropdown healthCareList;
     public GameObject dataPlane;
     public EditMode editMode = EditMode.COUNTRIES;
-    public World theWorld;
-    public Distributor distributor;
-
-    //live members
-    public string SelectedRegion;
-    
+        
     // Use this for initialization
     void Start ()
     {
@@ -188,20 +183,7 @@ public class UI : MonoBehaviour {
         regionList.options.Add(new Dropdown.OptionData("Russia"));
         regionList.options.Add(new Dropdown.OptionData("Oceania"));
     }
-
-    public void SelectCountryForDeployment(Text CountryText)
-    {
-        SelectedRegion = CountryText.text;
-    }
-
-    public void DeployVirus()
-    {
-        if (distributor.virus != null)
-        {
-            theWorld.DeployVirus(distributor.virus, SelectedRegion);
-        }
-    }
-        
+            
     public void LogMessage(string message)
     {
         Debug.Log(message);
