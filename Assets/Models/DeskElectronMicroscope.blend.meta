@@ -10,26 +10,71 @@ ModelImporter:
     100004: //RootNode
     100006: ElectronMicroscope
     100008: ElectronMicroscopeDoor
+    100010: computer
+    100012: ElectronMicroscope_Back
+    100014: ElectronMicroscope_Base
+    100016: ElectronMicroscope_Bolt
+    100018: ElectronMicroscope_Mounts
+    100020: ElectronMicroscope_Tube
     400000: desk
     400002: desk_no_computer
     400004: //RootNode
     400006: ElectronMicroscope
     400008: ElectronMicroscopeDoor
+    400010: computer
+    400012: ElectronMicroscope_Back
+    400014: ElectronMicroscope_Base
+    400016: ElectronMicroscope_Bolt
+    400018: ElectronMicroscope_Mounts
+    400020: ElectronMicroscope_Tube
     2300000: desk
     2300002: desk_no_computer
     2300004: ElectronMicroscope
     2300006: ElectronMicroscopeDoor
+    2300008: computer
+    2300010: ElectronMicroscope_Back
+    2300012: ElectronMicroscope_Base
+    2300014: ElectronMicroscope_Bolt
+    2300016: ElectronMicroscope_Mounts
+    2300018: ElectronMicroscope_Tube
     3300000: desk
     3300002: desk_no_computer
     3300004: ElectronMicroscope
     3300006: ElectronMicroscopeDoor
+    3300008: computer
+    3300010: ElectronMicroscope_Back
+    3300012: ElectronMicroscope_Base
+    3300014: ElectronMicroscope_Bolt
+    3300016: ElectronMicroscope_Mounts
+    3300018: ElectronMicroscope_Tube
     4300000: ElectronMicroscopeDoor
     4300002: desk
     4300004: ElectronMicroscope
     4300006: desk_no_computer
+    4300008: ElectronMicroscope_Mounts
+    4300010: ElectronMicroscope_Bolt
+    4300012: ElectronMicroscope_Back
+    4300014: ElectronMicroscope_Tube
+    4300016: ElectronMicroscope_Base
+    4300018: computer
+    6400000: desk
+    6400002: desk_no_computer
+    6400004: ElectronMicroscope
+    6400006: ElectronMicroscopeDoor
+    6400008: computer
+    6400010: ElectronMicroscope_Back
+    6400012: ElectronMicroscope_Base
+    6400014: ElectronMicroscope_Bolt
+    6400016: ElectronMicroscope_Mounts
+    6400018: ElectronMicroscope_Tube
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MicroscopeAccent_color
+    second: {fileID: 2100000, guid: d0bb75b75ad643344acb32daba9142d3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -86,13 +131,13 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0

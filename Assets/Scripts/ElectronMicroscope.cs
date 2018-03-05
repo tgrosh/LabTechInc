@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Distributor : MonoBehaviour {
-    public Canvas distributorScreen;
+public class ElectronMicroscope : MonoBehaviour
+{
+    public Canvas microscopeScreen;
     public Transform containerPlacemat;
     public Virus virus;
+    public MicroscopeDoorUI doorUI;
 
-	// Use this for initialization
-	void Start () {
-        distributorScreen.gameObject.SetActive(false);
+    // Use this for initialization
+    void Start () {
+        microscopeScreen.gameObject.SetActive(false);
     }
-	
+
     void OnTriggerEnter(Collider other)
     {
         virus = other.transform.root.GetComponent<Virus>();
 
         if (virus != null)
         {
-            distributorScreen.gameObject.SetActive(true);
+            microscopeScreen.gameObject.SetActive(true);
+            doorUI.Close();
 
             Rigidbody body = other.transform.root.GetComponent<Rigidbody>();
             body.MovePosition(containerPlacemat.position);
@@ -33,15 +36,15 @@ public class Distributor : MonoBehaviour {
                 {
                     grabber.ForceRelease(grabbable);
                 }
-            }
-        }        
+            } 
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (virus != null)
         {
-            distributorScreen.gameObject.SetActive(false);
+            microscopeScreen.gameObject.SetActive(false);
         }
     }
 }
