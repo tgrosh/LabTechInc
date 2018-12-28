@@ -13,6 +13,8 @@ public class UI : MonoBehaviour {
     public Dropdown regionList;
     public Dropdown healthCareList;
     public GameObject dataPlane;
+    public Text hotbarTooltip;
+    public Text helpText;
     public EditMode editMode = EditMode.COUNTRIES;
         
     // Use this for initialization
@@ -37,8 +39,24 @@ public class UI : MonoBehaviour {
                 ShowUI();
             }
 
-            Camera.main.transform.parent.GetComponentInChildren<FirstPersonController>().enabled = !uiPanel.activeInHierarchy;
+            //Camera.main.transform.parent.GetComponent<FirstPersonController>().enabled = !uiPanel.activeInHierarchy;
         }
+    }
+
+    public void SetTooltip(string text)
+    {
+        if (text == "")
+        {
+            hotbarTooltip.text = "Select an Edit Mode";
+        } else
+        {
+            hotbarTooltip.text = text;
+        }
+    }
+
+    public void SetHelpText(string text)
+    {
+        helpText.text = text;
     }
 
     public void ShowUI()
@@ -58,21 +76,25 @@ public class UI : MonoBehaviour {
     public void SetCountryMode()
     {
         SetToolbarMode(EditMode.COUNTRIES);
+        SetHelpText("Country Mode\nSelect Country Name from dropdown\nLeft Click on existing nodes. Click Assign\nHold Alt key to prevent overwriting existing\nHold Left Ctrl to add new nodes");
     }
 
     public void SetRegionMode()
     {
         SetToolbarMode(EditMode.REGIONS);
+        SetHelpText("Region Mode\nSelect Region Name from dropdown\nLeft Click on existing nodes. Click Assign\nHold Alt key to constrain to country borders\nHold Left Ctrl to add new nodes");
     }
 
     public void SetHealthcareMode()
     {
         SetToolbarMode(EditMode.HEALTHCARE);
+        SetHelpText("Healthcare Mode\nSelect Region Name from dropdown\nLeft Click on existing nodes. Click Assign\nHold Alt key to prevent overwriting existing\nHold Left Ctrl to add new nodes");
     }
 
     public void SetAirportMode()
     {
         SetToolbarMode(EditMode.AIRPORTS);
+        SetHelpText("Airport Mode\nLeft Click on existing nodes. Click Assign\nHold Left Ctrl to add new nodes");
     }
 
     public void SetToolbarMode(EditMode editMode)

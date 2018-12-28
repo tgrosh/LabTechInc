@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ElectronMicroscope : MonoBehaviour
 {
-    public Canvas microscopeScreen;
+    public MicroscopeUI microscopeUI;
     public Transform containerPlacemat;
     public Virus virus;
     public MicroscopeDoorUI doorUI;
 
     // Use this for initialization
     void Start () {
-        microscopeScreen.gameObject.SetActive(false);
+        microscopeUI.gameObject.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other)
@@ -20,7 +18,8 @@ public class ElectronMicroscope : MonoBehaviour
 
         if (virus != null)
         {
-            microscopeScreen.gameObject.SetActive(true);
+            microscopeUI.gameObject.SetActive(true);
+            microscopeUI.virus = virus;
             doorUI.Close();
 
             Rigidbody body = other.transform.root.GetComponent<Rigidbody>();
@@ -44,7 +43,8 @@ public class ElectronMicroscope : MonoBehaviour
     {
         if (virus != null)
         {
-            microscopeScreen.gameObject.SetActive(false);
+            microscopeUI.virus = null;
+            microscopeUI.gameObject.SetActive(false);
         }
     }
 }
