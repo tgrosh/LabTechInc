@@ -15,12 +15,15 @@ public class InfectionPoint: MonoBehaviour
     public Virus virus;
     public World world;
     public float updateInterval = 1.0f;
-    public float adjacentTravelChance = .1f;
-    public float airplaneTravelChance = .025f;
+    public float adjacentTravelChance = .1f; // means x% of population will travel per turn
+    public float airplaneTravelChance = .025f; // means x% of population will fly per turn
     public List<int> adjacentInfectionPointIndexes = new List<int>();
     public float temperatureFactor;
     public bool isAirport;
     public Airplane airplanePrefab;
+    public long totalPopulation;
+    public long infectedPopulation;
+    public long infectedPopulationDelta; //the change in infected population during the most recent update
 
     float prevInfection = 0f;
 
@@ -47,7 +50,10 @@ public class InfectionPoint: MonoBehaviour
 
             if (prevInfection != infection && OnInfectionPointUpdated != null)
             {
+                infectedPopulation = (long)(totalPopulation * infection);
+                infectedPopulationDelta = infectedPopulation - (long)(totalPopulation * prevInfection);
                 OnInfectionPointUpdated(this);
+                infectedPopulationDelta = 0;
             }
         }
     }
@@ -61,18 +67,20 @@ public class InfectionPoint: MonoBehaviour
 
         if (virus != null)
         {
-            float healthCareReduction = ((virus.infectionRate - 1f) * healthCare);
-            float infectionIncrease = virus.infectionRate - healthCareReduction;
-            infectionIncrease -= ((infectionIncrease - 1f) * temperatureFactor);
-            Infection *= infectionIncrease;
+            float healthCareReduction = 1f - healthCare;
+            float temperatureReduction = 1f - temperatureFactor;
+
+            float infectionIncrease = virus.infectionRate * temperatureReduction * healthCareReduction;
+            
+            Infection += Infection * infectionIncrease;
             InfectAdjacent();            
         }
     }
 
     void InfectAdjacent()
     {
-        float adjacentRoll = Random.value;
-        if (adjacentRoll > adjacentTravelChance) return;
+        float adjacentRoll = Random.Range(0f, population);
+        if (adjacentRoll > adjacentTravelChance * population * infection) return;
         
         int travelPoint = Random.Range(0, adjacentInfectionPointIndexes.Count - 1);
         int y = adjacentInfectionPointIndexes[travelPoint] / 360;
@@ -80,17 +88,14 @@ public class InfectionPoint: MonoBehaviour
         InfectionPoint adjacentPoint = world.infectionPoints[y][x];
         if (adjacentPoint != null)
         {
-            if (adjacentRoll < adjacentTravelChance * adjacentPoint.temperatureFactor)
-            {
-                adjacentPoint.Infect(virus);
-            }
+            adjacentPoint.Infect(virus);
         }
     }
 
     void LaunchAirplane()
     {
-        float airplaneRoll = Random.value;
-        if (airplaneRoll > airplaneTravelChance) return;
+        float airplaneRoll = Random.Range(0f, population);
+        if (population == 0 || airplaneRoll > airplaneTravelChance * population) return;
 
         InfectionPoint destination = world.GetRandomAirport();
         if (destination != null)
@@ -99,15 +104,10 @@ public class InfectionPoint: MonoBehaviour
             airplane.globe = world.globe;
             airplane.source = this;
             airplane.destination = destination;
-            if (virus != null)
+            if (Random.value < infection && virus != null)
             {
-                float infectionChance = ((virus.infectionRate - 1f) * healthCare);
-                infectionChance -= ((infectionChance - 1f) * temperatureFactor);
-                if (Random.value < infectionChance)
-                {
-                    airplane.Infect(virus);
-                    Debug.Log("INFECTED! Airplane has taken off from " + countryName + " bound for " + destination.countryName);
-                }
+                airplane.Infect(virus);
+                Debug.Log("INFECTED! Airplane has taken off from " + countryName + " bound for " + destination.countryName);
             }
             airplane.TakeOff();
         }
@@ -116,7 +116,6 @@ public class InfectionPoint: MonoBehaviour
     public void Start()
     {
         InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
-        adjacentTravelChance = adjacentTravelChance - (adjacentTravelChance * healthCare);        
     }
     
 }

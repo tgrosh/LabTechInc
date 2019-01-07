@@ -11,9 +11,13 @@ public class World : MonoBehaviour {
     public List<InfectionPoint> airports = new List<InfectionPoint>();
     public float drawInterval = 1.0f;
     public InfectionPoint infectionPointPrefab;
+    public long totalPopulation = 7531684256; //roughly earth's population as of Jan 1, 2018
+    public long infectedPopulation;
     
 	// Use this for initialization
 	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         for (int y = 0; y < 180; y++)
         {
@@ -22,6 +26,8 @@ public class World : MonoBehaviour {
 
         InfectionPoint.OnInfectionPointUpdated += InfectionPoint_OnInfectionPointUpdated;
         LoadInfectionPoints();
+
+        DeployVirus(GameObject.Find("ModableViralContainer").GetComponent<Virus>(), "Africa");
     }
 	
     public void DeployVirus(Virus virus, string RegionName)
@@ -84,14 +90,14 @@ public class World : MonoBehaviour {
         {
             foreach (CountryPoint countryPoint in countryData.Points)
             {
-                //InfectionPoint pt = new InfectionPoint();
                 InfectionPoint pt = Instantiate(infectionPointPrefab, gameObject.transform);
                 infectionPoints[countryPoint.y + 90][countryPoint.x + 180] = pt;
-
+                
                 pt.x = countryPoint.x;
                 pt.y = countryPoint.y;
                 pt.infection = countryPoint.infection;
                 pt.population = countryPoint.population;
+                pt.totalPopulation = (long)(totalPopulation * pt.population * .006f);
                 pt.countryName = countryData.Name;
                 pt.regionName = countryData.RegionName;
                 pt.world = this;
@@ -112,6 +118,8 @@ public class World : MonoBehaviour {
     {
         if (globe.isReady)
         {
+            //UnityEngine.Debug.Log(point.infectedPopulationDelta + " infected in " + point.countryName + ". New Total: " + point.infectedPopulation + "(" + point.infection + ")");
+            infectedPopulation += point.infectedPopulationDelta;
             globe.UpdateInfectionPointColor(point);
         }
     }

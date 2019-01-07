@@ -1,10 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Virus: MonoBehaviour {
+    public VirusStatus status;
     public float infectionRate;
     public List<VirusMod> mods;
+
+    private void Reset()
+    {
+        status = VirusStatus.Development;
+    }
 
     public void ApplyMod(VirusMod mod)
     {
@@ -14,4 +19,14 @@ public class Virus: MonoBehaviour {
             mod.Apply(this);
         }        
     }
+}
+
+public enum VirusStatus
+{
+    Development,
+    Live,
+    Discovered,
+    Identified,
+    Vaccinated,
+    Eradicated
 }
