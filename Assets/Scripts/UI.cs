@@ -39,7 +39,11 @@ public class UI : MonoBehaviour {
                 ShowUI();
             }
 
-            //Camera.main.transform.parent.GetComponent<FirstPersonController>().enabled = !uiPanel.activeInHierarchy;
+            GameObject.Find("FPSController").GetComponent<FirstPersonController>().enabled = !uiPanel.activeInHierarchy;
+        } else if (Input.GetKeyUp(KeyCode.F2))
+        {
+            GameObject.Find("OVRPlayerController").gameObject.SetActive(false);
+            GameObject.Find("FPSController").GetComponent<FirstPersonController>().enabled = true;            
         }
     }
 

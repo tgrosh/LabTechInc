@@ -14,8 +14,6 @@ public class World : MonoBehaviour {
     public long totalPopulation = 7531684256; //roughly earth's population as of Jan 1, 2018
     public long infectedPopulation;
     
-	// Use this for initialization
-	void Start ()
     // Use this for initialization
     void Start ()
     {
@@ -26,10 +24,16 @@ public class World : MonoBehaviour {
 
         InfectionPoint.OnInfectionPointUpdated += InfectionPoint_OnInfectionPointUpdated;
         LoadInfectionPoints();
-
-        DeployVirus(GameObject.Find("ModableViralContainer").GetComponent<Virus>(), "Africa");
     }
-	
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            DeployVirus(GameObject.Find("ModableViralContainer").GetComponent<Virus>(), "Africa");
+        }
+    }
+
     public void DeployVirus(Virus virus, string RegionName)
     {
         GetRandomInfectionPoint(RegionName).Infect(virus);

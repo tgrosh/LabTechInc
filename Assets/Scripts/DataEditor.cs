@@ -104,7 +104,7 @@ public class DataEditor : MonoBehaviour {
                             pdata.color = getHealthCareColor(countryPoint.healthCare);
                             break;
                         case EditMode.AIRPORTS:
-                            pdata.color = getAirportColor(countryPoint.isAirport);
+                            pdata.color = getAirportColor(countryPoint.isAirport, countryPoint.population);
                             break;
                         case EditMode.REGIONS:
                             pdata.color = getRegionColor(countryData.RegionName);
@@ -177,7 +177,8 @@ public class DataEditor : MonoBehaviour {
         {
             if (point.Selected)
             {
-                point.color = getAirportColor(isAirport);
+                isAirport = isAirport && point.population > 0f;
+                point.color = getAirportColor(isAirport, point.population);
                 point.IsAirport = isAirport;
                 point.Selected = false;
             }
@@ -233,9 +234,9 @@ public class DataEditor : MonoBehaviour {
         return healthCareGradient.Evaluate(healthCare);
     }
 
-    public Color getAirportColor(bool isAirport)
+    public Color getAirportColor(bool isAirport, float population)
     {
-        return isAirport ? Color.red : Color.white;
+        return isAirport ? population > 0 ? Color.green : Color.red : population > 0 ? Color.white : Color.black;
     }
 
     public void SaveWorldData(string resourceName)

@@ -16,7 +16,7 @@ public class InfectionPoint: MonoBehaviour
     public World world;
     public float updateInterval = 1.0f;
     public float adjacentTravelChance = .1f; // means x% of population will travel per turn
-    public float airplaneTravelChance = .025f; // means x% of population will fly per turn
+    public float airplaneTravelChance = 2.5f; // means x% of population will fly per turn
     public List<int> adjacentInfectionPointIndexes = new List<int>();
     public float temperatureFactor;
     public bool isAirport;
@@ -35,7 +35,7 @@ public class InfectionPoint: MonoBehaviour
         if (virus == null || this.virus != null) return;
 
         this.virus = virus;
-        Infection = .001f;
+        Infection = .0001f;
     }
 
     public float Infection {
@@ -80,7 +80,7 @@ public class InfectionPoint: MonoBehaviour
     void InfectAdjacent()
     {
         float adjacentRoll = Random.Range(0f, population);
-        if (adjacentRoll > adjacentTravelChance * population * infection) return;
+        if (adjacentRoll >= adjacentTravelChance * population * infection) return;
         
         int travelPoint = Random.Range(0, adjacentInfectionPointIndexes.Count - 1);
         int y = adjacentInfectionPointIndexes[travelPoint] / 360;
@@ -95,7 +95,7 @@ public class InfectionPoint: MonoBehaviour
     void LaunchAirplane()
     {
         float airplaneRoll = Random.Range(0f, population);
-        if (population == 0 || airplaneRoll > airplaneTravelChance * population) return;
+        if (airplaneRoll >= airplaneTravelChance * population) return;
 
         InfectionPoint destination = world.GetRandomAirport();
         if (destination != null)
@@ -104,10 +104,11 @@ public class InfectionPoint: MonoBehaviour
             airplane.globe = world.globe;
             airplane.source = this;
             airplane.destination = destination;
+            //Debug.Log("Airplane has taken off from " + countryName + " bound for " + destination.countryName);
             if (Random.value < infection && virus != null)
             {
                 airplane.Infect(virus);
-                Debug.Log("INFECTED! Airplane has taken off from " + countryName + " bound for " + destination.countryName);
+                Debug.Log("INFECTED! Airplane");
             }
             airplane.TakeOff();
         }
