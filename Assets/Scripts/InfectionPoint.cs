@@ -30,6 +30,11 @@ public class InfectionPoint: MonoBehaviour
     public static event InfectionUpdatedEventHandler OnInfectionPointUpdated;
     public delegate void InfectionUpdatedEventHandler(InfectionPoint point);
 
+    public void Start()
+    {
+        InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
+    }
+
     public void Infect(Virus virus)
     {
         if (virus == null || this.virus != null) return;
@@ -112,11 +117,5 @@ public class InfectionPoint: MonoBehaviour
             }
             airplane.TakeOff();
         }
-    }
-
-    public void Start()
-    {
-        InvokeRepeating("UpdateInfectionPoint", Random.value, updateInterval);
-    }
-    
+    }    
 }

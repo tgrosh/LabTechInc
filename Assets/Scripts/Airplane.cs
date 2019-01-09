@@ -8,18 +8,18 @@ public class Airplane : MonoBehaviour {
     public InfectionPoint destination;
     public DataGlobe globe;
     public Animator planeAnimator;
+    public int flightNumber;
     private Virus virus;
 
+    public static event InfectedAirplaneTakeoffEventHandler OnInfectedAirplaneTakeoff;
+    public delegate void InfectedAirplaneTakeoffEventHandler(Airplane airplane);
+
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
+        flightNumber = Random.Range(101, 2900);
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     public void Infect(Virus virus)
     {
         this.virus = virus;
@@ -28,6 +28,10 @@ public class Airplane : MonoBehaviour {
 
     public void TakeOff()
     {
+        if (virus != null && OnInfectedAirplaneTakeoff != null)
+        {
+            OnInfectedAirplaneTakeoff(this);
+        }
         SetPosition(source);
         planeAnimator.SetTrigger("Takeoff");
     }
