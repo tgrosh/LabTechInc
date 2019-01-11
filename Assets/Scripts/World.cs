@@ -5,6 +5,8 @@ using System.Diagnostics;
 using UnityEngine;
 
 public class World : MonoBehaviour {
+    public static World instance;
+
     public DataLoader loader;
     public DataGlobe globe;
     public InfectionPoint[][] infectionPoints = new InfectionPoint[180][];
@@ -13,7 +15,16 @@ public class World : MonoBehaviour {
     public InfectionPoint infectionPointPrefab;
     public long totalPopulation = 7531684256; //roughly earth's population as of Jan 1, 2018
     public long infectedPopulation;
-    
+    public Virus currentVirus;
+
+    private void Awake()
+    {
+        if (World.instance == null)
+        {
+            World.instance = this;
+        }
+    }
+
     // Use this for initialization
     void Start ()
     {
@@ -36,7 +47,9 @@ public class World : MonoBehaviour {
 
     public void DeployVirus(Virus virus, string RegionName)
     {
+        this.currentVirus = virus;
         GetRandomInfectionPoint(RegionName).Infect(virus);
+        virus.status = VirusStatus.Live;
     }
     
     public List<int> GetAdjacentInfectionPointIndexes(int x, int y)

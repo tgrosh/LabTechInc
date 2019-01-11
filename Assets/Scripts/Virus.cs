@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public class Virus: MonoBehaviour {
+    public string virusName;
     public VirusStatus status;
     public float infectionRate;
     public List<VirusMod> mods;
