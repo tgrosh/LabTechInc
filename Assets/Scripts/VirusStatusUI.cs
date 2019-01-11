@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class VirusStatusUI : MonoBehaviour {
-    public Virus virus;
     public Image[] statusImages;
 
     public VirusStatus currentStatus = VirusStatus.Development;
@@ -16,11 +15,13 @@ public class VirusStatusUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (virus.status != currentStatus)
+		if (World.instance.currentVirus.status != currentStatus)
         {
+            currentStatus = World.instance.currentVirus.status;
+
             foreach (Image img in statusImages)
             {
-                if (img.gameObject.name == virus.status.ToString())
+                if (img.gameObject.name == currentStatus.ToString())
                 {
                     img.color = Color.cyan;
                 } else
@@ -28,7 +29,6 @@ public class VirusStatusUI : MonoBehaviour {
                     img.color = Color.white;
                 }
             }
-            currentStatus = virus.status;
         }
 	}
 }

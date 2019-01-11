@@ -47,9 +47,9 @@ public class World : MonoBehaviour {
 
     public void DeployVirus(Virus virus, string RegionName)
     {
-        this.currentVirus = virus;
-        GetRandomInfectionPoint(RegionName).Infect(virus);
         virus.status = VirusStatus.Live;
+        currentVirus = virus;
+        GetRandomInfectionPoint(RegionName).Infect(virus);
     }
     
     public List<int> GetAdjacentInfectionPointIndexes(int x, int y)

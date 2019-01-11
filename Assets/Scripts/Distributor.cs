@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Distributor : MonoBehaviour {
-    public Canvas distributorScreen;
+    public DistributorUI distributorScreen;
     public Transform containerPlacemat;
     public Virus virus;
 
 	// Use this for initialization
 	void Start () {
-        distributorScreen.gameObject.SetActive(false);
+        distributorScreen.EnableDeployment(false);
     }
 	
     void OnTriggerEnter(Collider other)
@@ -18,7 +18,7 @@ public class Distributor : MonoBehaviour {
 
         if (virus != null)
         {
-            distributorScreen.gameObject.SetActive(true);
+            distributorScreen.EnableDeployment(true);
 
             Rigidbody body = other.transform.root.GetComponent<Rigidbody>();
             body.MovePosition(containerPlacemat.position);
@@ -41,7 +41,7 @@ public class Distributor : MonoBehaviour {
     {
         if (virus != null)
         {
-            distributorScreen.gameObject.SetActive(false);
+            distributorScreen.EnableDeployment(false);
         }
     }
 }
