@@ -15,7 +15,7 @@ public class VirusStatusUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (World.instance.currentVirus.status != currentStatus)
+		if (World.instance.currentVirus != null && World.instance.currentVirus.status != currentStatus)
         {
             currentStatus = World.instance.currentVirus.status;
 
