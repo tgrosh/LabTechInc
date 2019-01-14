@@ -1,15 +1,16 @@
-﻿/************************************************************************************
+/************************************************************************************
 
-Copyright   :   Copyright 2014-Present Oculus VR, LLC. All Rights reserved.
+Copyright   :   Copyright 2017 Oculus VR, LLC. All Rights reserved.
 
-Licensed under the Oculus VR Rift SDK License Version 3.2 (the "License");
+Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
 you may not use the Oculus VR Rift SDK except in compliance with the License,
 which is provided at the time of installation or download, or which
 otherwise accompanies this software in either electronic or hard copy form.
 
 You may obtain a copy of the License at
 
-http://www.oculusvr.com/licenses/LICENSE-3.2
+https://developer.oculus.com/licenses/sdk-3.4.1
+
 
 Unless required by applicable law or agreed to in writing, the Oculus VR SDK
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,8 +38,6 @@ public class OVRRaycaster : GraphicRaycaster, IPointerEnterHandler
 {
     [Tooltip("A world space pointer for this canvas")]
     public GameObject pointer;
-
-    public float maxRayDistance = .1f;
 
     public int sortOrder = 0;
 
@@ -94,7 +93,7 @@ public class OVRRaycaster : GraphicRaycaster, IPointerEnterHandler
 
         if (checkForBlocking && blockingObjects != BlockingObjects.None)
         {
-            float dist = maxRayDistance; // eventCamera.farClipPlane;
+            float dist = eventCamera.farClipPlane;
 
             if (blockingObjects == BlockingObjects.ThreeD || blockingObjects == BlockingObjects.All)
             {

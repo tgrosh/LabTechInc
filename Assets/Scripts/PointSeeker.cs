@@ -16,7 +16,7 @@ public class PointSeeker : MonoBehaviour {
 	void Start () {
         ui = GameObject.Find("UICanvas").GetComponent<UI>();
     }
-        
+    
     // Update is called once per frame
     void Update () {
         DataPoint point;

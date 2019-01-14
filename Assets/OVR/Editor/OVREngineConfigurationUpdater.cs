@@ -1,6 +1,6 @@
 /************************************************************************************
 
-Copyright   :   Copyright 2014 Oculus VR, LLC. All Rights reserved.
+Copyright   :   Copyright 2017 Oculus VR, LLC. All Rights reserved.
 
 Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
 you may not use the Oculus VR Rift SDK except in compliance with the License,
@@ -30,6 +30,8 @@ class OVREngineConfigurationUpdater
 {
 	private const string prefName = "OVREngineConfigurationUpdater_Enabled";
 	private const string menuItemName = "Tools/Oculus/Use Required Project Settings";
+	private const string androidAssetsPath = "Assets/Plugins/Android/assets";
+	private const string androidManifestPath = "Assets/Plugins/Android/AndroidManifest.xml";
 	static bool setPrefsForUtilities;
 
 	[MenuItem(menuItemName)]
@@ -103,7 +105,8 @@ class OVREngineConfigurationUpdater
 
 		if (!setPrefsForUtilities)
 			return;
-		
+
+		OVRPlugin.SendEvent("BuildTarget", EditorUserBuildSettings.activeBuildTarget.ToString());
 		EnforceAndroidSettings();
 		EnforceInputManagerBindings();
 #if UNITY_ANDROID
@@ -232,22 +235,25 @@ class OVREngineConfigurationUpdater
 			return;
 		
 		// Don't warn if the project may be set up for submission or global signing.
-		if (File.Exists("Assets/Plugins/Android/AndroidManifest.xml"))
+		if (File.Exists(androidManifestPath))
 			return;
-		
-		var files = Directory.GetFiles("Assets/Plugins/Android/assets");
+
 		bool foundPossibleOsig = false;
-		for (int i = 0; i < files.Length; ++i)
+		if (Directory.Exists(androidAssetsPath))
 		{
-			if (!files[i].Contains(".txt"))
+			var files = Directory.GetFiles(androidAssetsPath);
+			for (int i = 0; i < files.Length; ++i)
 			{
-				foundPossibleOsig = true;
-				break;
+				if (!files[i].Contains(".txt"))
+				{
+					foundPossibleOsig = true;
+					break;
+				}
 			}
 		}
 
 		if (!foundPossibleOsig)
-			Debug.LogWarning("Missing Gear VR OSIG at Assets/Plugins/Android/assets. Please see https://dashboard.oculus.com/tools/osig-generator");
+			Debug.LogWarning("Missing Gear VR OSIG at " + androidAssetsPath + ". Please see https://dashboard.oculus.com/tools/osig-generator");
 	}
 
 	private class Axis

@@ -1,6 +1,6 @@
 /************************************************************************************
 
-Copyright   :   Copyright 2014 Oculus VR, LLC. All Rights reserved.
+Copyright   :   Copyright 2017 Oculus VR, LLC. All Rights reserved.
 
 Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
 you may not use the Oculus VR Rift SDK except in compliance with the License,
@@ -32,7 +32,7 @@ public static class OVRExtensions
 	/// <summary>
 	/// Converts the given world-space transform to an OVRPose in tracking space.
 	/// </summary>
-	public static OVRPose ToTrackingSpacePose(this Transform transform)
+	public static OVRPose ToTrackingSpacePose(this Transform transform, Camera camera)
 	{
 		OVRPose headPose;
 #if UNITY_2017_2_OR_NEWER
@@ -43,10 +43,11 @@ public static class OVRExtensions
 		headPose.orientation = UnityEngine.VR.InputTracking.GetLocalRotation(UnityEngine.VR.VRNode.Head);
 #endif
 
-		var ret = headPose * transform.ToHeadSpacePose();
+		var ret = headPose * transform.ToHeadSpacePose(camera);
 
 		return ret;
 	}
+
 
 	/// <summary>
 	/// Converts the given pose from tracking-space to world-space.
@@ -74,9 +75,9 @@ public static class OVRExtensions
 	/// <summary>
 	/// Converts the given world-space transform to an OVRPose in head space.
 	/// </summary>
-	public static OVRPose ToHeadSpacePose(this Transform transform)
+	public static OVRPose ToHeadSpacePose(this Transform transform, Camera camera)
 	{
-		return Camera.current.transform.ToOVRPose().Inverse() * transform.ToOVRPose();
+		return camera.transform.ToOVRPose().Inverse() * transform.ToOVRPose();
 	}
 
 	internal static OVRPose ToOVRPose(this Transform t, bool isLocal = false)
