@@ -6,6 +6,7 @@ public class IcoGlobe : MonoBehaviour {
     public GameObject icoSphere;
     public Color defaultColor;
     public Color hoverColor;
+    public Color selectedColor;
 
     Mesh mesh;
     Color[] colors;
@@ -41,9 +42,23 @@ public class IcoGlobe : MonoBehaviour {
         mesh.colors = colors;
         colors = null;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    public void Select(int triangleIndex)
+    {
+        Color[] colors = (Color[])this.colors.Clone();
+        int[] triangles = mesh.triangles;
+
+        colors[mesh.triangles[triangleIndex * 3 + 0]] =
+            colors[mesh.triangles[triangleIndex * 3 + 1]] =
+            colors[mesh.triangles[triangleIndex * 3 + 2]] = selectedColor;
+
+        mesh.colors = colors;
+        this.colors = (Color[])mesh.colors.Clone();
+        colors = null;
+    }
+    
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }

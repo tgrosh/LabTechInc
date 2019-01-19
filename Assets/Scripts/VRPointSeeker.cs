@@ -15,7 +15,8 @@ public class VRPointSeeker : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {   
         activeController = OVRInputHelpers.GetControllerForButton(OVRInput.Button.PrimaryIndexTrigger, activeController);
         Ray pointer = OVRInputHelpers.GetSelectionRay(activeController, trackingSpace);
         RaycastHit hit; // Was anything hit?
@@ -27,6 +28,11 @@ public class VRPointSeeker : MonoBehaviour {
         if (icoGlobe == null) return;
         
         icoGlobe.Hover(hit.triangleIndex);
+
+        if (OVRInput.Get(OVRInput.RawButton.LIndexTrigger, activeController) ||
+            OVRInput.Get(OVRInput.RawButton.RIndexTrigger, activeController)) {
+            icoGlobe.Select(hit.triangleIndex);
+        }
 
         //Mesh mesh = meshCollider.sharedMesh;
         //Vector3[] vertices = mesh.vertices;
