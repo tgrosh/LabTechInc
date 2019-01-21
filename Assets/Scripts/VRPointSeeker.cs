@@ -4,63 +4,62 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class VRPointSeeker : MonoBehaviour {
+    public OVRPointerVisualizer visualizer;
     private OVRInput.Controller activeController;
     private Transform trackingSpace;
     private IcoGlobe icoGlobe;
     private int currentTriangle;
 
+    private bool isEnabled;
+    private OVRPhysicsRaycaster raycaster;
+    private bool grabbing;
+    private float rotateX;
+    private float rotateY;
+
     // Use this for initialization
     void Start () {
         trackingSpace = OVRInputHelpers.FindTrackingSpace();
+        raycaster = GetComponentInChildren<OVRPhysicsRaycaster>();
     }
 	
 	// Update is called once per frame
 	void Update ()
-    {   
+    {
         activeController = OVRInputHelpers.GetControllerForButton(OVRInput.Button.PrimaryIndexTrigger, activeController);
-        Ray pointer = OVRInputHelpers.GetSelectionRay(activeController, trackingSpace);
-        RaycastHit hit; // Was anything hit?
-        if (!Physics.Raycast(pointer, out hit, 10))
-            return;
 
-        icoGlobe = hit.collider.transform.parent.GetComponent<IcoGlobe>();
-
-        if (icoGlobe == null) return;
-        
-        icoGlobe.Hover(hit.triangleIndex);
-
-        if (OVRInput.Get(OVRInput.RawButton.LIndexTrigger, activeController) ||
-            OVRInput.Get(OVRInput.RawButton.RIndexTrigger, activeController)) {
-            icoGlobe.Select(hit.triangleIndex);
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, activeController))
+        {
+            isEnabled = true;
         }
 
-        //Mesh mesh = meshCollider.sharedMesh;
-        //Vector3[] vertices = mesh.vertices;
-        //Color[] colors = mesh.colors;
-        //int[] triangles = mesh.triangles; 
-        
-        //if (colors.Length == 0)
-        //{
-        //    colors = new Color[vertices.Length]; //just incase
-        //}
+        raycaster.enabled = isEnabled;
+        visualizer.gameObject.SetActive(isEnabled);
+        if (!isEnabled) return;
 
-        //colors[triangles[hit.triangleIndex * 3 + 0]] =
-        //    colors[triangles[hit.triangleIndex * 3 + 1]] =
-        //    colors[triangles[hit.triangleIndex * 3 + 2]] = Color.red;
+        Ray pointer = OVRInputHelpers.GetSelectionRay(activeController, trackingSpace);
+        RaycastHit hit; // Was anything hit?
+        if (!Physics.Raycast(pointer, out hit, 10)) return;
 
-        //mesh.colors = colors;
+        icoGlobe = hit.collider.transform.parent.GetComponent<IcoGlobe>();
+        if (icoGlobe == null) return;
 
-        //Vector3 p0 = vertices[triangles[hit.triangleIndex * 3 + 0]];
-        //Vector3 p1 = vertices[triangles[hit.triangleIndex * 3 + 1]];
-        //Vector3 p2 = vertices[triangles[hit.triangleIndex * 3 + 2]];
+        if (activeController == OVRInput.Controller.RTouch)
+        {
+            icoGlobe.Hover(hit.triangleIndex);
 
-        //Transform hitTransform = hit.collider.transform;
-        //p0 = hitTransform.TransformPoint(p0);
-        //p1 = hitTransform.TransformPoint(p1);
-        //p2 = hitTransform.TransformPoint(p2);
+            if (OVRInput.Get(OVRInput.RawButton.A, activeController))
+            {
+                icoGlobe.Select(hit.triangleIndex);
+            }
+        } else if (activeController == OVRInput.Controller.LTouch)
+        {
+            grabbing = OVRInput.Get(OVRInput.RawButton.LIndexTrigger, activeController);
+        }
 
-        //Debug.DrawLine(p0, p1);
-        //Debug.DrawLine(p1, p2);
-        //Debug.DrawLine(p2, p0);
+        if (grabbing)
+        {
+            rotateX = OVRInput.GetLocalControllerVelocity(activeController).x;
+            icoGlobe.transform.eulerAngles = new Vector3(0, icoGlobe.transform.eulerAngles.y - (rotateX * 150 * Time.deltaTime), 0);
+        }        
     }
 }

@@ -7,6 +7,7 @@
 		Pass {
 			Lighting On
 			ColorMaterial AmbientAndDiffuse
+		AlphaToMask On
 			SetTexture[_MainTex] {
 				combine texture * primary DOUBLE
 			}
